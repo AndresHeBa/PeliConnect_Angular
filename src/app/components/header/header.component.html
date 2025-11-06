@@ -1,0 +1,20 @@
+<header>
+		<div class="contenedor">
+            <h2 class="logotipo">PeliConnect</h2>
+            <nav>
+                <a routerLink="" routerLinkActive="activo" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+                <a routerLink="/movies" routerLinkActive="activo">Películas</a>
+                @if (user != '') {
+                    <a routerLink="" routerLinkActive="activo">{{user}}</a>
+                    <a routerLink="/lista" routerLinkActive="activo">Mi lista</a>
+                    @if (admin == "1") {
+                        <a routerLink="/admin" routerLinkActive="activo">Admin</a>
+                    }
+                    <a routerLink="" (click)="logout()">Cerrar Sesion</a>
+                } @else {
+                    <a routerLink="/login" routerLinkActive="activo">Iniciar Sesión</a>
+                    <a routerLink="/registro" routerLinkActive="activo">Registrarse</a>
+                }
+            </nav>
+        </div>
+</header>

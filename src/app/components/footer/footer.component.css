@@ -1,0 +1,51 @@
+
+
+.footer-logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  color: #00bcd4;
+  line-height: 1.1;
+}
+
+.footer-logo .line1 {
+  color: #9debc9;
+}
+
+.footer-logo .line2 {
+  color: #00bcd4;
+}
+
+.footer-logo .line3 {
+  color: #00bcd4;
+}
+
+.footer-link {
+  color: #ffffffcc;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 8px;
+  transition: color 0.2s ease-in-out;
+}
+
+.footer-link:hover {
+  color: #00bcd4;
+  text-decoration: underline;
+}
+
+.btn-light {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .footer-logo {
+    text-align: center;
+  }
+}
+
+.logotipo {
+	font-family: "Bebas Neue", sans-serif;
+	font-weight: normal;
+	color: var(--rojo);
+	font-size: 40px;
+}

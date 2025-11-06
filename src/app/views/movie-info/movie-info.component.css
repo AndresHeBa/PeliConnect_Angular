@@ -1,0 +1,249 @@
+:host {
+  display: block;
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+/* =======================
+   ENCABEZADO
+======================= */
+h1 {
+  color: #ffffff;
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.movie-details {
+  color: #aaaaaa;
+  font-size: 1.1rem;
+}
+
+/* =======================
+   CONTENEDOR PRINCIPAL
+======================= */
+.media-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 2rem;
+}
+
+/* Póster y video */
+.poster-container,
+.video-container {
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #2b2b2b;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.poster-container {
+  width: 300px;
+  height: 400px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.video-container {
+  width: 500px;
+  height: 400px;
+  flex-shrink: 0;
+}
+
+.poster-container img,
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-custom {
+  margin-top: 15px;
+  background-color: #ffc107;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 25px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-custom:hover {
+  background-color: #e0a800;
+}
+
+/* =======================
+   SIDEBAR
+======================= */
+.sidebar-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.sidebar {
+  background-color: #2b2b2b;
+  border-radius: 10px;
+  padding: 20px 15px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sidebar i {
+  font-size: 2.5rem;
+  color: #ffc107;
+}
+
+.sidebar p {
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin: 10px 0 0;
+}
+
+/* =======================
+   GÉNEROS Y DESCRIPCIÓN
+======================= */
+.badges-container {
+  margin-top: 2.5rem;
+}
+
+.badges-container .badge {
+  background-color: #3a3a3a;
+  color: #ffffff;
+  margin: 0 5px 5px 0;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.overview {
+  margin-top: 1.5rem;
+  line-height: 1.6;
+}
+
+/* =======================
+   SECCIÓN DE RESEÑAS
+======================= */
+.review-section {
+  margin-top: 4rem;
+  text-align: center;
+}
+
+#reviewForm {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+#reviewForm textarea,
+#reviewForm select {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #444;
+  background-color: #2b2b2b;
+  color: #e0e0e0;
+}
+
+#reviewForm textarea {
+  resize: none;
+  height: 150px;
+}
+
+#reviewForm button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  background-color: #ffc107;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#reviewForm button:hover {
+  background-color: #e0a800;
+}
+
+/* Reseñas publicadas */
+#reviewsContainer {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 15px;
+  background-color: #2b2b2b;
+  color: #e0e0e0;
+  border-radius: 10px;
+}
+
+.review-item {
+  border-bottom: 1px solid #444;
+  padding: 1rem 0;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+.review-item h5 {
+  margin-bottom: 0.3rem;
+  color: #ffc107;
+}
+
+.form-control {
+    color: #e0e0e0;
+}
+
+/* =======================
+   RESPONSIVE DESIGN
+======================= */
+@media (max-width: 992px) {
+  .media-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .video-container {
+    width: 100%;
+    height: auto;
+  }
+
+  .poster-container {
+    width: 80%;
+    height: auto;
+  }
+}
+
+
+/* Color blanco para el placeholder */
+#reviewText::placeholder {
+  color: #e0e0e0 !important;
+  opacity: 1; /* Asegura que no se vea transparente */
+}
+
+/* También aplica a navegadores que usan prefijos */
+#reviewText::-webkit-input-placeholder {
+  color: #e0e0e0 !important;
+}
+#reviewText:-moz-placeholder {
+  color: #e0e0e0 !important;
+}
+#reviewText::-moz-placeholder {
+  color: #e0e0e0 !important;
+}
+#reviewText:-ms-input-placeholder {
+  color: #e0e0e0 !important;
+}
+

@@ -1,0 +1,184 @@
+<div class="container mt-5" *ngIf="movie">
+  
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center mt-5">
+    <div class="spinner-border text-warning" role="status"></div>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="alert alert-danger mt-4 text-center">
+    {{ error }}
+  </div>
+
+  <!-- Información principal -->
+  <div *ngIf="!loading && movie">
+    <h1 class="text-center">{{ movie.title }}</h1>
+    <p class="text-center text-muted">{{ movie.tagline || '' }}</p>
+
+    <div class="media-container mt-4">
+      <!-- Póster -->
+      <div class="poster-container">
+        <img [src]="getPosterUrl(movie.poster_path)" [alt]="movie.title">
+        
+      </div>
+
+      <!-- Video -->
+      <div class="video-container" *ngIf="movie.trailer_key; else noTrailer">
+        <iframe
+        width="100%"
+        height="100%"
+        [src]="trailerUrl"
+        frameborder="0"
+        allowfullscreen>
+        </iframe>
+
+      </div>
+
+      <ng-template #noTrailer>
+        <div class="video-container d-flex align-items-center justify-content-center bg-dark rounded">
+          <p class="">No hay tráiler disponible.</p>
+        </div>
+      </ng-template>
+
+      <!-- Sidebar -->
+      <div class="d-flex flex-column justify-content-between">
+        <div class="sidebar mb-3">
+          <i class="bi bi-camera-video"></i>
+          <p>1 VIDEO</p>
+        </div>
+        <button class="btn btn-custom mt-3 px-4 py-2" (click)="aniadirLista()">
+          Añadir a Mi lista
+        </button>
+      </div>
+    </div>
+
+    <!-- Datos generales -->
+    <div class="row mt-4">
+      <div class="col-12 text-center">
+        <p class="">
+          <span style="font-weight: bold; color: orange; font-size: xx-large;">
+            {{ movie.vote_average | number:'1.1-1' }}
+          </span><br>
+          Título Original: {{ movie.original_title }} •
+          {{ movie.release_date | date:'yyyy' }} •
+          {{ movie.runtime }} min
+        </p>
+      </div>
+    </div>
+
+    <!-- Géneros -->
+    <div class="badges-container text-center mt-4">
+      <span class="badge bg-warning text-dark" *ngFor="let genre of movie.genres">
+        {{ genre }}
+      </span>
+    </div>
+
+    <!-- Sinopsis -->
+    <div class="mt-4 text-center">
+      <h3>Sinopsis</h3>
+      <p class="mt-3">{{ movie.overview }}</p>
+    </div>
+
+
+    <!-- Créditos principales -->
+    <div class="row mt-4" *ngIf="movie.director || movie.writers?.length">
+      <div class="col-12 text-center">
+        <p *ngIf="movie.director"><strong>Dirección:</strong> {{ movie.director }}</p>
+        <p *ngIf="movie.writers?.length">
+          <strong>Guion:</strong>
+          <ng-container *ngFor="let writer of movie.writers; let last = last">
+            {{ writer }}<span *ngIf="!last">, </span>
+          </ng-container>
+        </p>
+      </div>
+    </div>
+
+    <!-- Productoras -->
+    <div class="mt-5 text-center" *ngIf="movie.production_companies?.length">
+      <h4>Productoras</h4>
+      <p class="mt-2">{{ movie.production_companies.join(', ') }}</p>
+    </div>
+
+    <!-- Enlace oficial -->
+    <div class="text-center mt-4" *ngIf="movie.homepage">
+      <a [href]="movie.homepage" target="_blank" class="btn btn-custom">Visitar sitio oficial</a>
+    </div>
+
+    <!-- Reseñas -->
+    <div class="row mt-5">
+      <div class="col-12">
+        @if (user) {
+          <h3 class="fw-bold text-center mb-3">Escribe una Reseña</h3>
+          <form #reviewForm="ngForm" (ngSubmit)="enviarResena(reviewForm)" class="mb-4" id="reviewForm">
+            <div class="mb-3">
+              <label for="reviewText" class="form-label">Tu Reseña</label>
+              <textarea class="form-control" id="reviewText" name="texto" rows="4"
+                placeholder="Escribe tu reseña..." required ngModel></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="reviewRating" class="form-label">Calificación</label>
+              <select class="form-select" id="reviewRating" name="calificacion" required ngModel>
+                <option value="" disabled selected>Selecciona una calificación</option>
+                <option *ngFor="let n of [].constructor(10); let i = index" [value]="i + 1">
+                  {{ i + 1 }}
+                </option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar Reseña</button>
+          </form>
+        }
+
+        <!-- Lista de Reseñas --> 
+        <h4 class="fw-bold text-center mb-3">Reseñas</h4>
+
+        <div id="reviewsContainer">
+          <p *ngIf="reviews.length === 0" class="text-center">
+            Aún no hay reseñas. ¡Sé el primero en escribir una!
+          </p>
+
+          <div *ngFor="let review of reviews" class="p-3 mb-3">
+            <h5 class="mb-1">{{ review.usuario }}</h5>
+            <p class="mb-1">{{ review.texto }}</p>
+            <p class="mb-0"><strong>Calificación:</strong> {{ review.calificacion }} / 10</p>
+
+            <!-- Botón de reporte -->
+            <button class="btn btn-outline-danger btn-sm mt-2" (click)="abrirModalReporte(review)">
+              Reportar reseña
+            </button>
+          </div>
+        </div>
+
+        <!-- 🟥 Modal para reportar -->
+        <div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-3">
+              <div class="modal-header">
+                <h5 class="modal-title">Reportar reseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <div class="modal-body">
+                <p><strong>Usuario:</strong> {{ reviewSeleccionada?.usuario }}</p>
+                <p><strong>Reseña:</strong> {{ reviewSeleccionada?.texto }}</p>
+
+                <label for="descripcionReporte" class="form-label">Motivo del reporte</label>
+                <textarea
+                  id="descripcionReporte"
+                  [(ngModel)]="descripcionReporte"
+                  class="form-control"
+                  rows="4"
+                  placeholder="Describe brevemente el motivo..."
+                ></textarea>
+              </div>
+
+              <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-danger" (click)="enviarReporte()">Enviar reporte</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<!-- BUSCADOR -->
+<div class="search-bar">
+  <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    placeholder="Buscar película..."
+    (keyup.enter)="buscarPelicula()"
+  />
+  <button (click)="buscarPelicula()">Buscar</button>
+  <button *ngIf="searchTerm" class="clear-btn" (click)="limpiarBusqueda()">✕</button>
+</div>
+
+<!-- LISTA DE PELÍCULAS -->
+<div class="movie-list">
+  <div class="movie" *ngFor="let movie of movies">
+    <img
+      [src]="movie.poster_path ? IMG_URL + movie.poster_path : 'http://via.placeholder.com/1080x1580'"
+      [alt]="movie.title"
+    />
+
+    <div class="movie-info">
+      <h3>{{ movie.title }}</h3>
+      <span>{{ movie.vote_average | number:'1.1-1' }}</span>
+    </div>
+
+    <div class="overview">
+      <h3>Resumen</h3>
+      <p>{{ movie.overview || 'Sin descripción disponible.' }}</p>
+      <button class="know-more" (click)="verInformacion(movie.id)">
+        Información
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGINACIÓN -->
+<div class="pagination" *ngIf="!searching && !showingSearchResults">
+  <button (click)="paginaAnterior()" [disabled]="currentPage === 1">
+    ← Anterior
+  </button>
+
+  <span>Página {{ currentPage }} de {{ totalPages }}</span>
+
+  <button (click)="paginaSiguiente()" [disabled]="currentPage === totalPages">
+    Siguiente →
+  </button>
+</div>

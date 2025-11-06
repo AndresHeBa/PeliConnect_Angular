@@ -1,0 +1,68 @@
+<h2>Panel de Administración de Reportes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Usuario</th>
+      <th>Motivo</th>
+      <th>Fecha</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let report of reports">
+      <td>{{ report.id_reporte }}</td>
+      <td>{{ report.id_user }}</td>
+      <td>{{ report.descripcion }}</td>
+      <td>{{ report.fecha_reporte }}</td>
+      <td>
+        <button (click)="viewReport(report)">Ver</button>
+        <button (click)="deleteReport(report.id_reporte)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="selectedReport" class="modal-overlay" (click)="selectedReport = undefined"></div>
+
+<!-- Modal de Bootstrap -->
+<div class="modal" 
+     tabindex="-1" 
+     [style.display]="selectedReport ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title">Detalle del Reporte</h5>
+        <button type="button" 
+                class="btn-close btn-close-white" 
+                (click)="closeModal()" 
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-2">
+          <strong>ID:</strong> {{ selectedReport?.id_reporte }}
+        </div>
+        <div class="mb-2">
+          <strong>Usuario:</strong> {{ selectedReport?.id_user }}
+        </div>
+        <div class="mb-2">
+          <strong>Descripción:</strong> {{ selectedReport?.descripcion }}
+        </div>
+        <div class="mb-2">
+          <strong>Fecha:</strong> {{ selectedReport?.fecha_reporte | date:'short' }}
+        </div>
+      </div>
+      <div class="modal-footer border-secondary justify-content-center">
+        <button type="button" 
+                class="btn btn-warning w-100" 
+                (click)="closeModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop -->
+<div class="modal-backdrop fade show" 
+     *ngIf="selectedReport"
+     (click)="closeModal()"></div>

@@ -1,0 +1,34 @@
+/* Tarjeta de inicio de sesión */
+
+.login {
+    max-width: 400px;
+    width: 100%;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+p {
+    text-align: center;
+    margin-top: 1rem;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #e50914;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #c10812;
+}

@@ -1,0 +1,211 @@
+/* Fondo general */
+:host {
+  display: block;
+  background-color: #1a1d22;
+  min-height: 100vh;
+  padding: 2rem;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Grid principal: máximo 4 por fila */
+.movie-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+/* Tarjeta de película */
+.movie {
+  position: relative;
+  background-color: #000; /* 🔥 fondo totalmente negro */
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 260px;
+  cursor: pointer;
+}
+
+.movie:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8);
+}
+
+/* Imagen */
+.movie img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Información básica (parte inferior) */
+.movie-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000; /* 🔥 también negro */
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border-top: none; /* ❌ sin borde gris */
+}
+
+.movie-info h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.movie-info span {
+  color: #f5a623;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Contenedor del resumen (oculto por defecto) */
+.overview {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(34, 34, 34, 0.95);
+  color: #ddd;
+  padding: 1rem;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: justify;
+}
+
+.movie:hover .overview {
+  transform: translateY(0);
+}
+
+/* Título del resumen */
+.overview h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+/* Botón "Información" */
+.know-more {
+  align-self: flex-start;
+  margin-top: auto;
+  background-color: #f5a623;
+  color: #111;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.know-more:hover {
+  background-color: #ffa940;
+}
+
+/* Responsive: reducir columnas en pantallas pequeñas */
+@media (max-width: 1200px) {
+  .movie-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .movie-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .movie-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* PAGINACIÓN */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.pagination button {
+  background-color: #f5a623;
+  color: #111;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #ffa940;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  color: #fff;
+  font-size: 1rem;
+}
+/* BUSCADOR */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+}
+
+.search-bar input {
+  width: 300px;
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  border: none;
+  background-color: #222;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.search-bar input:focus {
+  outline: 2px solid #f5a623;
+}
+
+.search-bar button {
+  background-color: #f5a623;
+  color: #111;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+  background-color: #ffa940;
+}
+
+.clear-btn {
+  background-color: transparent !important;
+  color: #f5a623;
+  font-size: 1.2rem;
+  padding: 0.2rem 0.6rem;
+}
