@@ -202,9 +202,6 @@ h1 {
   color: #ffc107;
 }
 
-.form-control {
-    color: #e0e0e0;
-}
 
 /* =======================
    RESPONSIVE DESIGN
@@ -227,6 +224,7 @@ h1 {
 }
 
 
+
 /* Color blanco para el placeholder */
 #reviewText::placeholder {
   color: #e0e0e0 !important;
@@ -246,4 +244,6 @@ h1 {
 #reviewText:-ms-input-placeholder {
   color: #e0e0e0 !important;
 }
+
+
 

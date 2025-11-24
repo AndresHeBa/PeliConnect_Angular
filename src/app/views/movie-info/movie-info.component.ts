@@ -154,8 +154,12 @@ export class MovieInfoComponent implements OnInit {
     
 
     this.movieService.crearReporte(reporte).subscribe({
-      next: (res) => console.log('Reporte creado', res),
-      error: (err) => console.error('Error:', err)
+      next: () => {
+        alert('Reporte enviado con éxito.');
+        const modalElement = document.getElementById('reportModal');
+        const modal = bootstrap.Modal.getInstance(modalElement);
+        modal?.hide();
+      }
     });
     
 

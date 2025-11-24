@@ -1,16 +1,67 @@
 <body>
     <div class="form-container">
         <h1>Registro</h1>
-        <form action="" method="POST">
+        <form action="" method="POST" #registerForm="ngForm">
             <div class="form-group">
                 <label for="user">Nombre de usuario</label>
                 <input type="text" id="user" name="user" [(ngModel)]="user" placeholder="Ingrese su usuario" required>
             </div>
+            
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" [(ngModel)]="email" #emailInput="ngModel" 
+                       placeholder="Ingrese su correo" required email>
+                <div *ngIf="emailInput.touched && emailInput.errors" class="error-message">
+                    <div *ngIf="emailInput.errors['required']">El correo es requerido</div>
+                    <div *ngIf="emailInput.errors['email']">Ingrese un correo válido</div>
+                </div>
+            </div>
+            
             <div class="form-group">
                 <label for="pass">Contraseña</label>
-                <input type="password"id="pass" name="pass" [(ngModel)]="pass" placeholder="Ingrese su contraseña" required>
+                <input type="password" id="pass" name="pass" [(ngModel)]="pass" #passInput="ngModel" 
+                       placeholder="Ingrese su contraseña" required minlength="8" 
+                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]"
+                       (input)="checkPasswordStrength()">
+                
+                <!-- Indicador de fortaleza de contraseña -->
+                <div *ngIf="passInput.touched && pass" class="password-strength">
+                    <div class="strength-bar">
+                        <div class="strength-fill" [class]="passwordStrength"></div>
+                    </div>
+                    <span class="strength-text">{{getPasswordStrengthText()}}</span>
+                </div>
+                
+                <div *ngIf="passInput.touched && passInput.errors" class="error-message">
+                    <div *ngIf="passInput.errors['required']">La contraseña es requerida</div>
+                    <div *ngIf="passInput.errors['minlength']">Mínimo 8 caracteres</div>
+                    <div *ngIf="passInput.errors['pattern']">
+                        La contraseña debe contener:
+                        <ul>
+                            <li [class.valid]="hasUpperCase">Al menos una mayúscula (A-Z)</li>
+                            <li [class.valid]="hasLowerCase">Al menos una minúscula (a-z)</li>
+                            <li [class.valid]="hasNumber">Al menos un número (0-9)</li>
+                            <li [class.valid]="hasSpecialChar" [textContent]="'Al menos un carácter especial (@$!%*?&)'"></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn-register" (click)="register()">Registrarme</button>
+            
+            <div class="form-group">
+                <label for="confirmPass">Confirmar Contraseña</label>
+                <input type="password" id="confirmPass" name="confirmPass" [(ngModel)]="confirmPass" 
+                       #confirmPassInput="ngModel" placeholder="Confirme su contraseña" required>
+                <div *ngIf="confirmPassInput.touched && pass !== confirmPass && confirmPass" class="error-message">
+                    Las contraseñas no coinciden
+                </div>
+                <div *ngIf="confirmPassInput.touched && pass === confirmPass && confirmPass" class="success-message">
+                    ✓ Las contraseñas coinciden
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-register" (click)="register()">
+                Registrarme
+            </button>
         </form>
     </div>
 </body>

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Movie } from '../models/movie.interface';
 
 export interface Reporte {
+  estado: string;
   id_reporte: number;
   id_user: string;
   descripcion: string;
@@ -11,12 +12,11 @@ export interface Reporte {
   fecha_reporte: string;
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
-  private readonly API_URL = 'http://localhost:3000';
+  private readonly API_URL = 'http://peliconnect.ddns.net:3000';
   private IMG_URL = 'https://image.tmdb.org/t/p/w500';
   constructor(private http: HttpClient) { }
 

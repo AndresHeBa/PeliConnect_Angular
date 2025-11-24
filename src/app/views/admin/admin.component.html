@@ -1,68 +1,140 @@
-<h2>Panel de Administración de Reportes</h2>
+<h2>Panel de Administración</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Usuario</th>
-      <th>Motivo</th>
-      <th>Fecha</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let report of reports">
-      <td>{{ report.id_reporte }}</td>
-      <td>{{ report.id_user }}</td>
-      <td>{{ report.descripcion }}</td>
-      <td>{{ report.fecha_reporte }}</td>
-      <td>
-        <button (click)="viewReport(report)">Ver</button>
-        <button (click)="deleteReport(report.id_reporte)">Eliminar</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<!-- Barra de pestañas -->
+<div class="tab-bar">
+  <button class="tab-btn" [class.active]="selectedTab === 'reports'" (click)="selectedTab = 'reports'">Reportes</button>
+  <button class="tab-btn" [class.active]="selectedTab === 'users'" (click)="selectedTab = 'users'">Usuarios</button>
+</div>
 
-<div *ngIf="selectedReport" class="modal-overlay" (click)="selectedReport = undefined"></div>
+<!-- <div class="search-bar">
+  <input type="text" [value]="serchuser" (input)="serchuser = $event.target.value" placeholder="Buscar..." (keyup.enter)="buscar()" />
+  <button (click)="buscar()">Buscar</button>
+  <button *ngIf="serchuser" class="clear-btn" (click)="limpiarBusqueda()">✕</button>
+</div> -->
 
-<!-- Modal de Bootstrap -->
-<div class="modal" 
-     tabindex="-1" 
-     [style.display]="selectedReport ? 'block' : 'none'">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content bg-dark text-light">
-      <div class="modal-header border-secondary">
-        <h5 class="modal-title">Detalle del Reporte</h5>
-        <button type="button" 
-                class="btn-close btn-close-white" 
-                (click)="closeModal()" 
-                aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-2">
-          <strong>ID:</strong> {{ selectedReport?.id_reporte }}
+<!-- =======================
+     SECCIÓN DE REPORTES
+======================= -->
+<section *ngIf="selectedTab === 'reports'">
+  <h3>Reportes</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Motivo</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let report of reports">
+        <td>{{ report.id_reporte }}</td>
+        <td>{{ report.id_user }}</td>
+        <td>{{ report.descripcion }}</td>
+        <td>{{ report.fecha_reporte | date:'short' }}</td>
+        <td>
+          <span [ngClass]="{
+            'estado-activo': report.estado === 'Activo',
+            'estado-revision': report.estado === 'En revisión',
+            'estado-baneado': report.estado === 'Baneado'
+          }">
+            {{ report.estado }}
+          </span>
+        </td>
+        <td>
+          <button class="view-btn" (click)="viewReport(report)">Ver</button>
+          <button class="delete-btn" (click)="deleteReport(report.id_reporte)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal -->
+  <div *ngIf="selectedReport" class="modal-overlay" (click)="selectedReport = undefined"></div>
+
+  <div class="modal" tabindex="-1" [style.display]="selectedReport ? 'block' : 'none'">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Detalle del Reporte</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="closeModal()" aria-label="Close"></button>
         </div>
-        <div class="mb-2">
-          <strong>Usuario:</strong> {{ selectedReport?.id_user }}
+        <div class="modal-body">
+          <div><strong>ID:</strong> {{ selectedReport?.id_reporte }}</div>
+          <div><strong>Usuario:</strong> {{ selectedReport?.id_user }}</div>
+          <div><strong>Descripción:</strong> {{ selectedReport?.descripcion }}</div>
+          <div><strong>Estado:</strong> {{ selectedReport?.estado }}</div>
+          <div><strong>Fecha:</strong> {{ selectedReport?.fecha_reporte | date:'short' }}</div>
         </div>
-        <div class="mb-2">
-          <strong>Descripción:</strong> {{ selectedReport?.descripcion }}
+        <div class="modal-footer border-secondary justify-content-center">
+          <button type="button" class="btn btn-warning w-100" (click)="closeModal()">Cerrar</button>
         </div>
-        <div class="mb-2">
-          <strong>Fecha:</strong> {{ selectedReport?.fecha_reporte | date:'short' }}
-        </div>
-      </div>
-      <div class="modal-footer border-secondary justify-content-center">
-        <button type="button" 
-                class="btn btn-warning w-100" 
-                (click)="closeModal()">Cerrar</button>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Backdrop -->
-<div class="modal-backdrop fade show" 
-     *ngIf="selectedReport"
-     (click)="closeModal()"></div>
+  <div class="modal-backdrop fade show" *ngIf="selectedReport" (click)="closeModal()"></div>
+</section>
+
+<!-- =======================
+     SECCIÓN DE USUARIOS
+======================= -->
+<section class="usuarios" *ngIf="selectedTab === 'users'">
+  <h3>Usuarios</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.nombre }}</td>
+        <td>{{ user.Correo }}</td>
+        <td>
+          <span *ngIf="user.activo == '1' ">Activo</span>
+          <span *ngIf="user.activo == '0' ">Baneado</span>
+        </td>
+        <td>
+          <button class="view-btn" (click)="viewUser(user)">Ver</button>
+          <button *ngIf="user.activo == '1'" class="delete-btn" (click)="banUser(user.id)">Banear</button>
+          <button *ngIf="user.activo == '0'" class="view-btn" (click)="activateUser(user.id)">Activar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal Usuario -->
+  <div *ngIf="selectedUser" class="modal-overlay" (click)="selectedUser = undefined"></div>
+  <div class="modal" tabindex="-1" [style.display]="selectedUser ? 'block' : 'none'">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Detalle del Usuario</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="closeUserModal()"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div><strong>ID: </strong> {{ selectedUser?.id }}</div>
+          <div><strong>Nombre: </strong> {{ selectedUser?.nombre }}</div>
+          <div><strong>Email: </strong> {{ selectedUser?.Correo }}</div>
+          <div><strong>Estado: </strong> <span *ngIf="selectedUser?.activo == '1' ">Activo</span>
+          <span *ngIf="selectedUser?.activo == '0' ">Baneado</span></div>
+        </div>
+        <div class="modal-footer border-secondary justify-content-center">
+          <button type="button" class="btn btn-warning w-100" (click)="closeUserModal()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show" *ngIf="selectedUser" (click)="closeUserModal()"></div>
+</section>
