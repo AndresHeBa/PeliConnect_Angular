@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 export const _IP = 'peliconnect.ddns.net';
 export const _URL_SERVICES = "http://" + _IP + ":3000/";
@@ -26,7 +27,15 @@ export interface usuario {
 })
 export class AuthService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
+
+  sendVerificationCode(email: string): Observable<any> {
+    return this.http.post(`${_URL_SERVICES}send-verification`, { email });
+  }
+
+  verifyCode(email: string, code: string): Observable<any> {
+    return this.http.post(`${_URL_SERVICES}verify-code`, { email, code });
+  }
 
   registerUser(username: string, password: string, email: string) {
     const body = {
@@ -45,8 +54,8 @@ export class AuthService {
     return this.http.post<any>(`${_URL_SERVICES}login`, body, httpOptions);
   }
 
-  readuser(){
-    return this.http.get<{users :usuario[]}>(`${_URL_SERVICES}get_users`);
+  readuser() {
+    return this.http.get<{ users: usuario[] }>(`${_URL_SERVICES}get_users`);
   }
 
   banuser(id: string) {
@@ -67,5 +76,5 @@ export class AuthService {
     localStorage.removeItem('user');
   }
 
-  
+
 }

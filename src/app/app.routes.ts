@@ -6,6 +6,7 @@ import { MoviesComponent } from './views/movies/movies.component';
 import { ListaComponent } from './components/lista/lista.component';
 import { MovieInfoComponent } from './views/movie-info/movie-info.component';
 import { AdminComponent } from './views/admin/admin.component';
+import { PasswordRecoveryComponent } from './views/password-recovery/password-recovery.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -16,4 +17,5 @@ export const routes: Routes = [
     { path: 'lista' , component:ListaComponent },
     { path: 'movie/:id', component: MovieInfoComponent },
     { path: 'admin', component: AdminComponent},
+    { path: 'passreco', component: PasswordRecoveryComponent}
 ];

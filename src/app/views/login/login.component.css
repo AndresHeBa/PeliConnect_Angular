@@ -1,34 +1,187 @@
 /* Tarjeta de inicio de sesión */
-
 .login {
-    max-width: 400px;
+    max-width: 420px;
     width: 100%;
-    padding: 2rem;
+    padding: 2.5rem;
     background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    margin: 0 auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    margin: 50px auto;
 }
 
 h1 {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    color: #1a1a1a;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+/* Estilos de formulario */
+.form-label {
     color: #333;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
 }
 
-p {
-    text-align: center;
-    margin-top: 1rem;
-    color: #fff;
+.form-control {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
 }
 
+.form-control:focus {
+    border-color: #e50914;
+    box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.15);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: #999;
+}
+
+/* Wrapper para la contraseña con el ojito */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper .form-control {
+    padding-right: 3rem;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #e50914;
+}
+
+.password-toggle:focus {
+    outline: none;
+}
+
+.password-toggle svg {
+    display: block;
+}
+
+/* Opciones del formulario */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.form-check {
+    margin: 0;
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: #e50914;
+    border-color: #e50914;
+}
+
+.form-check-label {
+    color: #555;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.forgot-password {
+    color: #e50914;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #c10812;
+    text-decoration: underline;
+}
+
+/* Botón */
 .btn-primary {
     background-color: #e50914;
     border: none;
+    padding: 0.85rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
 }
 
 .btn-primary:hover {
     background-color: #c10812;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Enlaces de texto */
+.register-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.text-primary {
+    color: #e50914 !important;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.text-primary:hover {
+    color: #c10812 !important;
+    text-decoration: underline;
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 1rem;
+    color: #999;
+    font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login {
+        padding: 2rem 1.5rem;
+        margin: 30px 15px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }

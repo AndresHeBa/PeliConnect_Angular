@@ -1,67 +1,146 @@
 <body>
     <div class="form-container">
-        <h1>Registro</h1>
-        <form action="" method="POST" #registerForm="ngForm">
-            <div class="form-group">
-                <label for="user">Nombre de usuario</label>
-                <input type="text" id="user" name="user" [(ngModel)]="user" placeholder="Ingrese su usuario" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="email">Correo electrónico</label>
-                <input type="email" id="email" name="email" [(ngModel)]="email" #emailInput="ngModel" 
-                       placeholder="Ingrese su correo" required email>
-                <div *ngIf="emailInput.touched && emailInput.errors" class="error-message">
-                    <div *ngIf="emailInput.errors['required']">El correo es requerido</div>
-                    <div *ngIf="emailInput.errors['email']">Ingrese un correo válido</div>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="pass">Contraseña</label>
-                <input type="password" id="pass" name="pass" [(ngModel)]="pass" #passInput="ngModel" 
-                       placeholder="Ingrese su contraseña" required minlength="8" 
-                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]"
-                       (input)="checkPasswordStrength()">
-                
-                <!-- Indicador de fortaleza de contraseña -->
-                <div *ngIf="passInput.touched && pass" class="password-strength">
-                    <div class="strength-bar">
-                        <div class="strength-fill" [class]="passwordStrength"></div>
-                    </div>
-                    <span class="strength-text">{{getPasswordStrengthText()}}</span>
+        <!-- Paso 1: Formulario de registro -->
+        <div *ngIf="currentStep === 1">
+            <h1>Registro</h1>
+            <form action="" method="POST" #registerForm="ngForm">
+                <div class="form-group">
+                    <label for="user">Nombre de usuario</label>
+                    <input type="text" id="user" name="user" [(ngModel)]="user" 
+                           placeholder="Ingrese su usuario" required>
                 </div>
                 
-                <div *ngIf="passInput.touched && passInput.errors" class="error-message">
-                    <div *ngIf="passInput.errors['required']">La contraseña es requerida</div>
-                    <div *ngIf="passInput.errors['minlength']">Mínimo 8 caracteres</div>
-                    <div *ngIf="passInput.errors['pattern']">
-                        La contraseña debe contener:
-                        <ul>
-                            <li [class.valid]="hasUpperCase">Al menos una mayúscula (A-Z)</li>
-                            <li [class.valid]="hasLowerCase">Al menos una minúscula (a-z)</li>
-                            <li [class.valid]="hasNumber">Al menos un número (0-9)</li>
-                            <li [class.valid]="hasSpecialChar" [textContent]="'Al menos un carácter especial (@$!%*?&)'"></li>
-                        </ul>
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" name="email" [(ngModel)]="email" 
+                           #emailInput="ngModel" placeholder="Ingrese su correo" 
+                           required email>
+                    <div *ngIf="emailInput.touched && emailInput.errors" class="error-message">
+                        <div *ngIf="emailInput.errors['required']">El correo es requerido</div>
+                        <div *ngIf="emailInput.errors['email']">Ingrese un correo válido</div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="confirmPass">Confirmar Contraseña</label>
-                <input type="password" id="confirmPass" name="confirmPass" [(ngModel)]="confirmPass" 
-                       #confirmPassInput="ngModel" placeholder="Confirme su contraseña" required>
-                <div *ngIf="confirmPassInput.touched && pass !== confirmPass && confirmPass" class="error-message">
-                    Las contraseñas no coinciden
+                
+                <div class="form-group">
+                    <label for="pass">Contraseña</label>
+                    <div class="password-wrapper">
+                        <input [type]="showPassword ? 'text' : 'password'" id="pass" 
+                               name="pass" [(ngModel)]="pass" #passInput="ngModel" 
+                               placeholder="Ingrese su contraseña" required minlength="8" 
+                               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]"
+                               (input)="checkPasswordStrength()">
+                        <button type="button" class="password-toggle" (click)="togglePassword()" tabindex="-1">
+                            <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div *ngIf="passInput.touched && pass" class="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-fill" [class]="passwordStrength"></div>
+                        </div>
+                        <span class="strength-text">{{getPasswordStrengthText()}}</span>
+                    </div>
+                    
+                    <div *ngIf="passInput.touched && passInput.errors" class="error-message">
+                        <div *ngIf="passInput.errors['required']">La contraseña es requerida</div>
+                        <div *ngIf="passInput.errors['minlength']">Mínimo 8 caracteres</div>
+                        <div *ngIf="passInput.errors['pattern']">
+                            <strong>La contraseña debe contener:</strong>
+                            <ul>
+                                <li [class.valid]="hasUpperCase">
+                                    <span class="check-icon" *ngIf="hasUpperCase">✓</span>
+                                    Al menos una mayúscula (A-Z)
+                                </li>
+                                <li [class.valid]="hasLowerCase">
+                                    <span class="check-icon" *ngIf="hasLowerCase">✓</span>
+                                    Al menos una minúscula (a-z)
+                                </li>
+                                <li [class.valid]="hasNumber">
+                                    <span class="check-icon" *ngIf="hasNumber">✓</span>
+                                    Al menos un número (0-9)
+                                </li>
+                                <li [class.valid]="hasSpecialChar">
+                                    <span class="check-icon" *ngIf="hasSpecialChar">✓</span>
+                                    <span [textContent]="'Al menos un carácter especial (@$!%*?&)'"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div *ngIf="confirmPassInput.touched && pass === confirmPass && confirmPass" class="success-message">
-                    ✓ Las contraseñas coinciden
+                
+                <div class="form-group">
+                    <label for="confirmPass">Confirmar Contraseña</label>
+                    <div class="password-wrapper">
+                        <input [type]="showConfirmPassword ? 'text' : 'password'" 
+                               id="confirmPass" name="confirmPass" [(ngModel)]="confirmPass" 
+                               #confirmPassInput="ngModel" placeholder="Confirme su contraseña" required>
+                        <button type="button" class="password-toggle" (click)="toggleConfirmPassword()" tabindex="-1">
+                            <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div *ngIf="confirmPassInput.touched && pass !== confirmPass && confirmPass" class="error-message">
+                        ✗ Las contraseñas no coinciden
+                    </div>
+                    <div *ngIf="confirmPassInput.touched && pass === confirmPass && confirmPass" class="success-message">
+                        ✓ Las contraseñas coinciden
+                    </div>
                 </div>
-            </div>
-            
-            <button type="submit" class="btn-register" (click)="register()">
-                Registrarme
+                
+                <button type="button" class="btn-register" (click)="register()" 
+                        [disabled]="isLoading">
+                    {{ isLoading ? 'Procesando...' : 'Registrarme' }}
+                </button>
+            </form>
+        </div>
+
+        <!-- Paso 2: Verificación de código -->
+        <div *ngIf="currentStep === 2" class="verification-step">
+            <button type="button" class="back-button" (click)="goBack()">
+                ← Volver
             </button>
-        </form>
+            
+            <h1>Verificar Email</h1>
+            <p class="verification-description">
+                Hemos enviado un código de 6 dígitos a:
+            </p>
+            <p class="email-highlight">{{ email }}</p>
+            
+            <div class="form-group">
+                <label for="verificationCode">Código de verificación</label>
+                <input type="text" id="verificationCode" name="verificationCode" 
+                       [(ngModel)]="verificationCode" placeholder="000000" 
+                       maxlength="6" class="code-input" [disabled]="isLoading"
+                       (keyup.enter)="verifyCode()">
+            </div>
+
+            <button type="button" class="btn-register" (click)="verifyCode()" 
+                    [disabled]="isLoading || verificationCode.length !== 6">
+                {{ isLoading ? 'Verificando...' : 'Verificar Código' }}
+            </button>
+
+            <button type="button" class="btn-secondary" (click)="resendCode()" 
+                    [disabled]="isLoading || !canResend">
+                {{ canResend ? 'Reenviar Código' : 'Reenviar en ' + resendTimer + 's' }}
+            </button>
+        </div>
+
+        <!-- Mensajes -->
+        <div *ngIf="message" [class]="isError ? 'message error' : 'message success'">
+            {{ message }}
+        </div>
     </div>
 </body>

@@ -1,23 +1,28 @@
 .form-container {
     position: relative;
     z-index: 1;
-    max-width: 400px;
+    max-width: 450px;
     width: 100%;
-    padding: 2rem;
+    padding: 2.5rem;
     background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     text-align: left;
-    margin: 0 auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin: 50px auto;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .form-container h1 {
     text-align: center;
-    margin-bottom: 1.5rem;
-    color: #333;
-    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #1a1a1a;
+    font-size: 1.85rem;
+    font-weight: 600;
 }
 
 .form-group {
@@ -26,25 +31,30 @@
 
 .form-group label {
     display: block;
-    font-weight: bold;
+    font-weight: 500;
     color: #333;
     margin-bottom: 0.5rem;
+    font-size: 0.95rem;
 }
 
 .form-group input {
     width: 100%;
     padding: 0.75rem;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: #0d6efd;
-    box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+    border-color: #e50914;
+    box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.15);
+}
+
+.form-group input::placeholder {
+    color: #999;
 }
 
 .form-group input.ng-invalid.ng-touched {
@@ -55,25 +65,69 @@
     border-color: #28a745;
 }
 
+/* Wrapper para la contraseña con el ojito */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    padding-right: 3rem;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #e50914;
+}
+
+.password-toggle:focus {
+    outline: none;
+}
+
+.password-toggle svg {
+    display: block;
+}
+
 .btn-register {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.85rem;
     background-color: #e50914;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
+    font-weight: 600;
     text-align: center;
     margin-top: 1rem;
     transition: all 0.3s ease;
 }
 
-.btn-register:hover:not(.disabled) {
+.btn-register:hover:not(:disabled) {
     background-color: #c10812;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
 }
 
-.btn-register.disabled {
+.btn-register:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-register:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
     opacity: 0.6;
@@ -81,74 +135,230 @@
 
 .error-message {
     color: #e50914;
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
-    padding: 0.5rem;
-    background-color: #ffe6e6;
-    border-radius: 3px;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background-color: #fff5f5;
+    border-radius: 6px;
     border-left: 3px solid #e50914;
+    animation: slideIn 0.3s ease;
+}
+
+.error-message strong {
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
 .error-message ul {
-    margin: 0.25rem 0;
-    padding-left: 1rem;
+    margin: 0.5rem 0 0 0;
+    padding-left: 1.25rem;
+    list-style: none;
 }
 
 .error-message li {
-    margin-bottom: 0.25rem;
-    transition: color 0.3s ease;
+    margin-bottom: 0.4rem;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.error-message li::before {
+    content: '✗';
+    position: absolute;
+    left: 0;
+    color: #e50914;
+    font-weight: bold;
 }
 
 .error-message li.valid {
     color: #28a745;
-    text-decoration: line-through;
+}
+
+.error-message li.valid::before {
+    content: '';
+}
+
+.check-icon {
+    position: absolute;
+    left: 0;
+    color: #28a745;
+    font-weight: bold;
 }
 
 .success-message {
     color: #28a745;
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
-    padding: 0.5rem;
-    background-color: #e8f5e8;
-    border-radius: 3px;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background-color: #f0f9f4;
+    border-radius: 6px;
     border-left: 3px solid #28a745;
+    font-weight: 500;
+    animation: slideIn 0.3s ease;
 }
 
 /* Indicador de fortaleza de contraseña */
 .password-strength {
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
 }
 
 .strength-bar {
     width: 100%;
-    height: 5px;
-    background-color: #ddd;
+    height: 6px;
+    background-color: #e9ecef;
     border-radius: 3px;
     overflow: hidden;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
 }
 
 .strength-fill {
     height: 100%;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    border-radius: 3px;
 }
 
 .strength-fill.weak {
     width: 33%;
-    background-color: #e50914;
+    background: linear-gradient(90deg, #e50914, #ff4444);
 }
 
 .strength-fill.medium {
     width: 66%;
-    background-color: #ffa500;
+    background: linear-gradient(90deg, #ffa500, #ffcc00);
 }
 
 .strength-fill.strong {
     width: 100%;
-    background-color: #28a745;
+    background: linear-gradient(90deg, #28a745, #4caf50);
 }
 
 .strength-text {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: #666;
+    font-weight: 500;
+}
+
+/* Paso de verificación */
+.verification-step {
+    animation: slideIn 0.3s ease;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: #e50914;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.back-button:hover {
+    gap: 0.7rem;
+    color: #c10812;
+}
+
+.verification-description {
+    text-align: center;
+    color: #666;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.email-highlight {
+    text-align: center;
+    font-weight: 600;
+    color: #e50914;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+.code-input {
+    text-align: center;
+    font-size: 1.5rem !important;
+    letter-spacing: 0.5rem;
+    font-weight: 600;
+    padding: 1rem !important;
+}
+
+.btn-secondary {
+    width: 100%;
+    padding: 0.85rem;
+    background-color: transparent;
+    color: #e50914;
+    border: 2px solid #e50914;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: #fff5f5;
+    transform: translateY(-1px);
+}
+
+.btn-secondary:disabled {
+    border-color: #cccccc;
+    color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Mensajes globales */
+.message {
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 1.5rem;
+    font-weight: 500;
+    animation: slideIn 0.3s ease;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Animación */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .form-container {
+        padding: 2rem 1.5rem;
+        margin: 30px 15px;
+    }
+    
+    .form-container h1 {
+        font-size: 1.5rem;
+    }
+    
+    .code-input {
+        font-size: 1.2rem !important;
+        letter-spacing: 0.3rem;
+    }
 }
