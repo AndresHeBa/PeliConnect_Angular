@@ -185,3 +185,11 @@ h1 {
         align-items: flex-start;
     }
 }
+
+.alert-danger {
+    background: #f8d7da;
+    color: #842029;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}

@@ -1,6 +1,6 @@
 :host {
   display: block;
-  background-color: #1e1e1e;
+  background-color: #000000;
   color: #e0e0e0;
   padding: 2rem;
   min-height: 100vh;
@@ -10,13 +10,14 @@
    ENCABEZADO
 ======================= */
 h1 {
-  color: #ffffff;
+  color: #ff0000;
   font-size: 3rem;
   margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(255, 0, 0, 0.3);
 }
 
 .movie-details {
-  color: #aaaaaa;
+  color: #ff6666;
   font-size: 1.1rem;
 }
 
@@ -37,8 +38,9 @@ h1 {
 .video-container {
   border-radius: 10px;
   overflow: hidden;
-  background-color: #2b2b2b;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  background-color: #1a0000;
+  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
+  border: 1px solid #330000;
 }
 
 .poster-container {
@@ -63,18 +65,21 @@ h1 {
 
 .btn-custom {
   margin-top: 15px;
-  background-color: #ffc107;
-  color: #000;
+  background-color: #ff0000;
+  color: #ffffff;
   font-weight: bold;
   border: none;
   border-radius: 20px;
   padding: 10px 25px;
   cursor: pointer;
   transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(255, 0, 0, 0.3);
 }
 
 .btn-custom:hover {
-  background-color: #e0a800;
+  background-color: #cc0000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.4);
 }
 
 /* =======================
@@ -88,20 +93,21 @@ h1 {
 }
 
 .sidebar {
-  background-color: #2b2b2b;
+  background-color: #1a0000;
   border-radius: 10px;
   padding: 20px 15px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.2);
   height: 190px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border: 1px solid #330000;
 }
 
 .sidebar i {
   font-size: 2.5rem;
-  color: #ffc107;
+  color: #ff0000;
 }
 
 .sidebar p {
@@ -118,18 +124,24 @@ h1 {
 }
 
 .badges-container .badge {
-  background-color: #3a3a3a;
-  color: #ffffff;
+  background-color: #330000;
+  color: #ff9999;
   margin: 0 5px 5px 0;
   padding: 8px 12px;
   font-size: 0.9rem;
   border-radius: 8px;
   display: inline-block;
+  border: 1px solid #660000;
 }
 
 .overview {
   margin-top: 1.5rem;
   line-height: 1.6;
+  color: #ffcccc;
+  background-color: #1a0000;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-left: 4px solid #ff0000;
 }
 
 /* =======================
@@ -152,8 +164,8 @@ h1 {
   margin-bottom: 1rem;
   border-radius: 8px;
   padding: 10px;
-  border: 1px solid #444;
-  background-color: #2b2b2b;
+  border: 1px solid #660000;
+  background-color: #1a0000;
   color: #e0e0e0;
 }
 
@@ -167,15 +179,16 @@ h1 {
   padding: 10px;
   border-radius: 8px;
   font-weight: bold;
-  background-color: #ffc107;
-  color: #000;
+  background-color: #ff0000;
+  color: #ffffff;
   border: none;
   cursor: pointer;
   transition: 0.3s;
 }
 
 #reviewForm button:hover {
-  background-color: #e0a800;
+  background-color: #cc0000;
+  transform: translateY(-2px);
 }
 
 /* Reseñas publicadas */
@@ -183,13 +196,14 @@ h1 {
   max-width: 600px;
   margin: 2rem auto;
   padding: 15px;
-  background-color: #2b2b2b;
+  background-color: #1a0000;
   color: #e0e0e0;
   border-radius: 10px;
+  border: 1px solid #330000;
 }
 
 .review-item {
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid #660000;
   padding: 1rem 0;
 }
 
@@ -199,9 +213,8 @@ h1 {
 
 .review-item h5 {
   margin-bottom: 0.3rem;
-  color: #ffc107;
+  color: #ff0000;
 }
-
 
 /* =======================
    RESPONSIVE DESIGN
@@ -223,27 +236,42 @@ h1 {
   }
 }
 
-
-
 /* Color blanco para el placeholder */
 #reviewText::placeholder {
-  color: #e0e0e0 !important;
-  opacity: 1; /* Asegura que no se vea transparente */
+  color: #ff9999 !important;
+  opacity: 1;
 }
 
 /* También aplica a navegadores que usan prefijos */
 #reviewText::-webkit-input-placeholder {
-  color: #e0e0e0 !important;
+  color: #ff9999 !important;
 }
 #reviewText:-moz-placeholder {
-  color: #e0e0e0 !important;
+  color: #ff9999 !important;
 }
 #reviewText::-moz-placeholder {
-  color: #e0e0e0 !important;
+  color: #ff9999 !important;
 }
 #reviewText:-ms-input-placeholder {
-  color: #e0e0e0 !important;
+  color: #ff9999 !important;
 }
 
+/* Efectos adicionales para mejor contraste */
+.poster-container:hover,
+.video-container:hover,
+.sidebar:hover {
+  box-shadow: 0 6px 12px rgba(255, 0, 0, 0.4);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
 
+/* Mejora visual para los badges */
+.badge {
+  transition: all 0.3s ease;
+}
 
+.badge:hover {
+  background-color: #660000 !important;
+  color: #ffffff !important;
+  transform: scale(1.05);
+}

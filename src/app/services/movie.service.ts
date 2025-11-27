@@ -33,6 +33,10 @@ export class MovieService {
     return this.http.get(`${this.API_URL}/get_details/${id}`);
   }
 
+  getMovieInfo(movieId: string): Observable<any> {
+    return this.http.get(`${this.API_URL}pelicula/${movieId}`);
+  }
+
   getListaFavoritos(usuario: string): Observable<string[]> {
     return this.http.get<string[]>(`${this.API_URL}/leerLista/${usuario}`);
   }
@@ -43,6 +47,14 @@ export class MovieService {
 
   getReviews(pelicula: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.API_URL}/leerReviews/${pelicula}`);
+  }
+
+  getUserReviews(userId: string): Observable<any[]> {
+    return this.http.post<any[]>(`${this.API_URL}/userReviews`, { id: userId });
+  }
+
+  deleteReview(reviewId: string): Observable<any> {
+    return this.http.delete(`${this.API_URL}/review/${reviewId}`);
   }
 
   postReview(body: any): Observable<any> {
@@ -65,7 +77,7 @@ export class MovieService {
     console.log("Entre a get reports");
     let result = this.http.get<Reporte[]>(`${this.API_URL}/report/view`);
     console.log(result);
-    
+
     return result;
   }
 

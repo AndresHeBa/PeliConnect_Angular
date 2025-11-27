@@ -1,3 +1,4 @@
+// login.component.ts
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
@@ -15,13 +16,13 @@ export class LoginComponent {
   pass: string = '';
   showPassword: boolean = false;
 
-  togglePassword() {
-    this.showPassword = !this.showPassword;
-  }
-
-  constructor(private authSvc: AuthService) {}
+  require2fa: boolean = false;
+  twoFaCode: string = '';
+  twoFaError: string = '';
 
   private router = inject(Router);
+
+  constructor(private authSvc: AuthService) {}
 
   ngOnInit() {
     if (localStorage.getItem('user')) {
@@ -29,25 +30,76 @@ export class LoginComponent {
     }
   }
 
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
   login() {
+    this.twoFaError = '';
+
+    if (this.require2fa) {
+      // Si ya estamos en modo 2FA, verificar el código
+      this.verify2FA();
+      return;
+    }
+
+    // Login inicial
     this.authSvc.login(this.user, this.pass).subscribe({
-      next: (res) => {
-        if (res) { // Ajusta según la respuesta de tu API
-          console.log(res);
-          localStorage.setItem('user', this.user);
-          localStorage.setItem('admin', res.admin);
-          localStorage.setItem('idUser', res.id);
-          console.log('Login successful');
-          window.location.reload();
-        } else {
-          console.log('Login failed');
-        }
+      next: (res: any) => {
         console.log(res);
-        
+
+        if (res.two_fa) {
+          // Backend pide 2FA
+          this.require2fa = true;
+          return;
+        }
+
+        if (res.success) {
+          this.handleSuccessfulLogin(res);
+        } else {
+          this.twoFaError = res.error || 'Credenciales incorrectas';
+        }
       },
       error: (err) => {
-        console.log('Login failed', err);
+        this.twoFaError = err?.error?.error || 'Error al iniciar sesión';
+        console.error(err);
       }
     });
+  }
+
+  verify2FA() {
+    if (!this.twoFaCode || this.twoFaCode.length !== 6) {
+      this.twoFaError = 'Ingresa un código de 6 dígitos';
+      return;
+    }
+
+    this.authSvc.verify2FA(this.user, this.pass, this.twoFaCode).subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.handleSuccessfulLogin(res);
+        } else {
+          this.twoFaError = res.error || 'Código 2FA incorrecto';
+        }
+      },
+      error: (err) => {
+        this.twoFaError = err?.error?.error || 'Error al verificar 2FA';
+        console.error(err);
+      }
+    });
+  }
+
+  private handleSuccessfulLogin(res: any) {
+    localStorage.setItem('user', this.user);
+    localStorage.setItem('admin', res.admin);
+    localStorage.setItem('idUser', res.id);
+    //localStorage.setItem('token', res.token);
+    
+    // ✅ Guardar device token si viene en la respuesta
+    if (res.deviceToken) {
+      localStorage.setItem('deviceToken', res.deviceToken);
+    }
+
+    console.log('Login successful');
+    window.location.reload();
   }
 }

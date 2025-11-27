@@ -7,15 +7,17 @@ import { ListaComponent } from './components/lista/lista.component';
 import { MovieInfoComponent } from './views/movie-info/movie-info.component';
 import { AdminComponent } from './views/admin/admin.component';
 import { PasswordRecoveryComponent } from './views/password-recovery/password-recovery.component';
+import { UserComponent } from './views/user/user.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path : 'home', component: HomeComponent },
-    { path : 'registro', component: RegistroComponent },
+    { path: 'home', component: HomeComponent },
+    { path: 'registro', component: RegistroComponent },
     { path: 'login' , component:LoginComponent},
     { path: 'movies' , component:MoviesComponent },
     { path: 'lista' , component:ListaComponent },
     { path: 'movie/:id', component: MovieInfoComponent },
     { path: 'admin', component: AdminComponent},
+    { path: 'user', component: UserComponent },
     { path: 'passreco', component: PasswordRecoveryComponent}
 ];
