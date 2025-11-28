@@ -1,7 +1,7 @@
 <div class="account-container">
   <!-- Header -->
   <div class="header">
-    <div class="logo-container">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
       <div class="logo">PELICONNECT</div>
     </div>
     <h1 class="title">Mi Cuenta</h1>
@@ -11,25 +11,34 @@
     <!-- Sidebar Menu -->
     <div class="sidebar">
       <div class="menu">
-        <button 
-          *ngFor="let item of menuItems"
-          (click)="setActiveTab(item.id)"
-          [class.active]="activeTab === item.id"
+        <button *ngFor="let item of menuItems" (click)="setActiveTab(item.id)" [class.active]="activeTab === item.id"
           class="menu-button">
-          <svg *ngIf="item.id === 'profile'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg *ngIf="item.id === 'profile'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
-          <svg *ngIf="item.id === 'security'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg *ngIf="item.id === 'security'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
-          <svg *ngIf="item.id === 'comments'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+          <svg *ngIf="item.id === 'comments'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path
+              d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+            </path>
           </svg>
-          <svg *ngIf="item.id === 'settings'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg *ngIf="item.id === 'settings'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
-            <path d="M12 1v6m0 6v6m5.66-13.66l-4.24 4.24m0 6.84l4.24 4.24M23 12h-6m-6 0H1m18.66 5.66l-4.24-4.24m0-6.84l4.24-4.24"></path>
+            <path
+              d="M12 1v6m0 6v6m5.66-13.66l-4.24 4.24m0 6.84l4.24 4.24M23 12h-6m-6 0H1m18.66 5.66l-4.24-4.24m0-6.84l4.24-4.24">
+            </path>
           </svg>
           <span class="menu-button-text">{{item.label}}</span>
         </button>
@@ -41,15 +50,15 @@
       <!-- Profile Tab -->
       <div *ngIf="activeTab === 'profile'" class="content-panel">
         <h2 class="content-title">Información del Perfil</h2>
-        
+
         <!-- Avatar Section -->
-        <div class="avatar-section">
+        <div
+          style="display: flex; align-items: center; gap: 1.5rem; padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #262626;">
           <div class="avatar">
             {{charn}}
           </div>
           <div class="user-info">
             <h3 class="user-name">{{ userData?.nombre || 'Usuario' }}</h3>
-            <p class="user-id">ID: {{ userData?.id || 'N/A' }}</p>
           </div>
         </div>
 
@@ -58,37 +67,33 @@
           <div class="user-info-grid">
             <div class="input-group">
               <label class="input-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
                 Nombre de Usuario
               </label>
-              <input
-                type="text"
-                [value]="userData?.nombre"
-                class="input-field"
-                readonly>
+              <input type="text" [value]="userData?.nombre" class="input-field" readonly>
             </div>
 
             <div class="input-group">
               <label class="input-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                   <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
                 Correo Electrónico
               </label>
-              <input
-                type="email"
-                [value]="userData?.Correo"
-                class="input-field"
-                readonly>
+              <input type="email" [value]="userData?.Correo" class="input-field" readonly>
             </div>
           </div>
 
           <button class="update-button" (click)="enableEditMode()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              style="margin-right: 8px;">
               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
             </svg>
@@ -101,44 +106,44 @@
           <div class="user-info-grid">
             <div class="input-group">
               <label class="input-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
                 Nombre de Usuario
               </label>
-              <input
-                type="text"
-                [(ngModel)]="editableUserData.nombre"
-                class="input-field"
+              <input type="text" [(ngModel)]="editableUserData.nombre" class="input-field"
                 placeholder="Ingrese su nombre">
             </div>
 
             <div class="input-group">
               <label class="input-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                   <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
                 Correo Electrónico
               </label>
-              <input
-                type="email"
-                [(ngModel)]="editableUserData.Correo"
-                class="input-field"
+              <input type="email" [(ngModel)]="editableUserData.Correo" class="input-field"
                 placeholder="Ingrese su correo">
             </div>
           </div>
 
           <div class="button-group">
             <button class="update-button" (click)="actualizarinfo()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                style="margin-right: 8px;">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
               Guardar Cambios
             </button>
             <button class="cancel-button" (click)="cancelEdit()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                style="margin-right: 8px;">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
@@ -152,7 +157,8 @@
           <div class="two-factor-header">
             <div class="two-factor-info">
               <div class="two-factor-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                 </svg>
               </div>
@@ -167,15 +173,9 @@
               <span class="toggle-label">
                 {{ twoFaEnabled ? 'ON' : 'OFF' }}
               </span>
-              <button
-                (click)="toggleTwoFa()"
-                [class.enabled]="twoFaEnabled"
-                [class.disabled]="!twoFaEnabled"
+              <button (click)="toggleTwoFa()" [class.enabled]="twoFaEnabled" [class.disabled]="!twoFaEnabled"
                 class="toggle-button">
-                <span 
-                  [class.enabled]="twoFaEnabled"
-                  [class.disabled]="!twoFaEnabled"
-                  class="toggle-slider"></span>
+                <span [class.enabled]="twoFaEnabled" [class.disabled]="!twoFaEnabled" class="toggle-slider"></span>
               </button>
             </div>
           </div>
@@ -184,15 +184,17 @@
           <div *ngIf="show2FASetup" class="two-fa-modal">
             <div class="modal-content">
               <h3 class="modal-title">Configurar Autenticación de Dos Factores</h3>
-              
+
               <div *ngIf="!twoFaEnabled" class="setup-steps">
-                <p class="step-description">Escanea este código QR con tu aplicación de autenticación (Google Authenticator, Authy, etc.)</p>
-                
+                <p class="step-description">Escanea este código QR con tu aplicación de autenticación (Google
+                  Authenticator, Authy, etc.)</p>
+
                 <!-- QR Code -->
                 <div class="qr-container">
                   <img [src]="qrCodeUrl" alt="QR Code" class="qr-image" *ngIf="qrCodeUrl">
                   <div class="qr-loading" *ngIf="!qrCodeUrl">
-                    <svg class="spinner" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="spinner" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <line x1="12" y1="2" x2="12" y2="6"></line>
                       <line x1="12" y1="18" x2="12" y2="22"></line>
                       <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
@@ -212,11 +214,15 @@
                   <div class="key-display">
                     <code>{{ twoFaSecret }}</code>
                     <button class="copy-button" (click)="copySecret()" [class.copied]="secretCopied">
-                      <svg *ngIf="!secretCopied" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <svg *ngIf="!secretCopied" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                       </svg>
-                      <svg *ngIf="secretCopied" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <svg *ngIf="secretCopied" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
                     </button>
@@ -226,14 +232,9 @@
                 <!-- Verification -->
                 <div class="verification-section">
                   <label class="input-label">Ingresa el código de 6 dígitos:</label>
-                  <input
-                    type="text"
-                    [(ngModel)]="verificationCode"
-                    maxlength="6"
-                    class="input-field code-input"
-                    placeholder="000000"
-                    (keyup.enter)="verify2FACode()">
-                  
+                  <input type="text" [(ngModel)]="verificationCode" maxlength="6" class="input-field code-input"
+                    placeholder="000000" (keyup.enter)="verify2FACode()">
+
                   <div *ngIf="verificationError" class="error-message">
                     {{ verificationError }}
                   </div>
@@ -252,21 +253,20 @@
               <!-- Desactivar 2FA -->
               <div *ngIf="twoFaEnabled" class="disable-2fa">
                 <p class="warning-message">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                    </path>
                     <line x1="12" y1="9" x2="12" y2="13"></line>
                     <line x1="12" y1="17" x2="12.01" y2="17"></line>
                   </svg>
-                  ¿Estás seguro de que deseas desactivar la autenticación de dos factores? Tu cuenta estará menos protegida.
+                  ¿Estás seguro de que deseas desactivar la autenticación de dos factores? Tu cuenta estará menos
+                  protegida.
                 </p>
-                
+
                 <div class="verification-section">
                   <label class="input-label">Ingresa tu código actual para confirmar:</label>
-                  <input
-                    type="text"
-                    [(ngModel)]="verificationCode"
-                    maxlength="6"
-                    class="input-field code-input"
+                  <input type="text" [(ngModel)]="verificationCode" maxlength="6" class="input-field code-input"
                     placeholder="000000">
                 </div>
 
@@ -287,33 +287,33 @@
       <!-- Security Tab -->
       <div *ngIf="activeTab === 'security'" class="content-panel">
         <h2 class="content-title">Seguridad</h2>
-        
+
         <div class="user-info-grid">
           <div class="input-group full-width">
             <label class="input-label">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
               </svg>
               Contraseña Actual
             </label>
             <div class="password-input-container">
-              <input
-                [type]="showCurrentPassword ? 'text' : 'password'"
-                [(ngModel)]="currentPassword"
-                placeholder="Ingrese su contraseña actual"
-                class="input-field">
-              <button
-                type="button"
-                (click)="togglePasswordVisibility('current')"
-                class="password-toggle"
-                tabindex="-1">
-                <svg *ngIf="!showCurrentPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <input [type]="showCurrentPassword ? 'text' : 'password'" [(ngModel)]="currentPassword"
+                placeholder="Ingrese su contraseña actual" class="input-field">
+              <button type="button" (click)="togglePasswordVisibility('current')" class="password-toggle" tabindex="-1">
+                <svg *ngIf="!showCurrentPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
-                <svg *ngIf="showCurrentPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <svg *ngIf="showCurrentPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path
+                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                  </path>
                   <line x1="1" y1="1" x2="23" y2="23"></line>
                 </svg>
               </button>
@@ -322,29 +322,29 @@
 
           <div class="input-group">
             <label class="input-label">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
               </svg>
               Nueva Contraseña
             </label>
             <div class="password-input-container">
-              <input
-                [type]="showNewPassword ? 'text' : 'password'"
-                [(ngModel)]="newPassword"
-                placeholder="Ingrese su nueva contraseña"
-                class="input-field">
-              <button
-                type="button"
-                (click)="togglePasswordVisibility('new')"
-                class="password-toggle"
-                tabindex="-1">
-                <svg *ngIf="!showNewPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <input [type]="showNewPassword ? 'text' : 'password'" [(ngModel)]="newPassword"
+                placeholder="Ingrese su nueva contraseña" class="input-field">
+              <button type="button" (click)="togglePasswordVisibility('new')" class="password-toggle" tabindex="-1">
+                <svg *ngIf="!showNewPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
-                <svg *ngIf="showNewPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <svg *ngIf="showNewPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path
+                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                  </path>
                   <line x1="1" y1="1" x2="23" y2="23"></line>
                 </svg>
               </button>
@@ -353,29 +353,29 @@
 
           <div class="input-group">
             <label class="input-label">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
               </svg>
               Confirmar Nueva Contraseña
             </label>
             <div class="password-input-container">
-              <input
-                [type]="showConfirmPassword ? 'text' : 'password'"
-                [(ngModel)]="confirmPassword"
-                placeholder="Confirme su nueva contraseña"
-                class="input-field">
-              <button
-                type="button"
-                (click)="togglePasswordVisibility('confirm')"
-                class="password-toggle"
-                tabindex="-1">
-                <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <input [type]="showConfirmPassword ? 'text' : 'password'" [(ngModel)]="confirmPassword"
+                placeholder="Confirme su nueva contraseña" class="input-field">
+              <button type="button" (click)="togglePasswordVisibility('confirm')" class="password-toggle" tabindex="-1">
+                <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
-                <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path
+                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                  </path>
                   <line x1="1" y1="1" x2="23" y2="23"></line>
                 </svg>
               </button>
@@ -407,24 +407,18 @@
         <!-- Filtros y búsqueda -->
         <div class="comments-filters">
           <div class="search-box">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
               <path d="m21 21-4.35-4.35"></path>
             </svg>
-            <input 
-              type="text" 
-              [(ngModel)]="searchTerm"
-              (ngModelChange)="filterComments()"
-              placeholder="Buscar por película..."
-              class="search-input">
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterComments()"
+              placeholder="Buscar por película..." class="search-input">
           </div>
-          
+
           <div class="filter-buttons">
-            <button 
-              *ngFor="let filter of scoreFilters"
-              (click)="setScoreFilter(filter.value)"
-              [class.active]="currentScoreFilter === filter.value"
-              class="filter-button">
+            <button *ngFor="let filter of scoreFilters" (click)="setScoreFilter(filter.value)"
+              [class.active]="currentScoreFilter === filter.value" class="filter-button">
               {{ filter.label }}
             </button>
           </div>
@@ -432,7 +426,8 @@
 
         <!-- Loading State -->
         <div *ngIf="loadingComments" class="loading-container">
-          <svg class="spinner" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="spinner" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="2" x2="12" y2="6"></line>
             <line x1="12" y1="18" x2="12" y2="22"></line>
             <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
@@ -447,11 +442,15 @@
 
         <!-- Empty State -->
         <div *ngIf="!loadingComments && filteredComments.length === 0" class="empty-state">
-          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="empty-icon">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="empty-icon">
+            <path
+              d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+            </path>
           </svg>
           <p class="empty-text">
-            {{ searchTerm || currentScoreFilter !== 'all' ? 'No se encontraron comentarios con esos filtros' : 'Aún no has realizado ningún comentario' }}
+            {{ searchTerm || currentScoreFilter !== 'all' ? 'No se encontraron comentarios con esos filtros' : 'Aún no
+            has realizado ningún comentario' }}
           </p>
         </div>
 
@@ -460,9 +459,10 @@
           <div *ngFor="let comment of paginatedComments; let i = index" class="comment-card">
             <div class="comment-header">
               <div class="movie-info">
-                <div class="movie-poster" [style.background-image]="'url(' + getMoviePoster(comment.ID_pelicula) + ')'">
-                  <div class="movie-poster-placeholder" *ngIf="!getMoviePoster(comment.ID_pelicula)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <div class="movie-poster" [style.background-image]="'url(' + getMoviePoster(comment.poster) + ')'">
+                  <div class="movie-poster-placeholder" *ngIf="!getMoviePoster(comment.poster)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
                       <line x1="7" y1="2" x2="7" y2="22"></line>
                       <line x1="17" y1="2" x2="17" y2="22"></line>
@@ -479,47 +479,40 @@
                   <p class="comment-date">{{ formatDate(comment.fecha) }}</p>
                 </div>
               </div>
-              
+
               <div class="comment-score">
                 <div class="stars">
-                  <svg *ngFor="let star of [1,2,3,4,5]" 
-                      [class.filled]="star <= comment.score"
-                      xmlns="http://www.w3.org/2000/svg" 
-                      width="18" 
-                      height="18" 
-                      viewBox="0 0 24 24" 
-                      fill="currentColor" 
-                      stroke="currentColor" 
-                      stroke-width="2" 
-                      stroke-linecap="round" 
-                      stroke-linejoin="round">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  <svg *ngFor="let star of [1,2,3,4,5]" [class.filled]="star <= comment.score/2"
+                    xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                    </polygon>
                   </svg>
                 </div>
-                <span class="score-number">{{ comment.score }}/5</span>
+                <span class="score-number">{{ comment.score/2 }}/5</span>
               </div>
             </div>
 
             <div class="comment-content">
               <p [class.expanded]="comment.expanded">{{ comment.Contenido }}</p>
-              <button 
-                *ngIf="comment.Contenido.length > 200"
-                (click)="toggleCommentExpansion(comment)"
+              <button *ngIf="comment.Contenido.length > 200" (click)="toggleCommentExpansion(comment)"
                 class="read-more-button">
                 {{ comment.expanded ? 'Ver menos' : 'Ver más' }}
               </button>
             </div>
 
             <div class="comment-actions">
-              <button class="action-button edit" (click)="editComment(comment)">
+              <!-- <button class="action-button edit" (click)="editComment(comment)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                   <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                 </svg>
                 Editar
-              </button>
-              <button class="action-button delete" (click)="deleteComment(comment)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              </button> -->
+              <button class="action-button delete" (click)="deleteComment(comment.id_review)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="3 6 5 6 21 6"></polyline>
                   <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                 </svg>
@@ -531,81 +524,176 @@
 
         <!-- Paginación -->
         <div *ngIf="!loadingComments && filteredComments.length > commentsPerPage" class="pagination">
-          <button 
-            (click)="previousPage()"
-            [disabled]="currentPage === 1"
-            class="pagination-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button (click)="previousPage()" [disabled]="currentPage === 1" class="pagination-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
             Anterior
           </button>
-          
+
           <div class="pagination-info">
             <span class="page-numbers">
-              <button 
-                *ngFor="let page of getPageNumbers()"
-                (click)="goToPage(page)"
-                [class.active]="currentPage === page"
-                class="page-number">
+              <button *ngFor="let page of getPageNumbers()" (click)="goToPage(page)"
+                [class.active]="currentPage === page" class="page-number">
                 {{ page }}
               </button>
             </span>
           </div>
 
-          <button 
-            (click)="nextPage()"
-            [disabled]="currentPage === totalPages"
-            class="pagination-button">
+          <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="pagination-button">
             Siguiente
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </button>
         </div>
       </div>
 
-     <!-- Settings Tab -->
-        <div *ngIf="activeTab === 'settings'" class="content-panel">
-          <h2 class="content-title">Configuración</h2>
+      <!-- Settings Tab -->
+      <div *ngIf="activeTab === 'settings'" class="content-panel">
+        <h2 class="content-title">Configuración</h2>
 
-          <!-- Sección de Zona Peligrosa -->
-          <div class="settings-section danger-zone">
-            <div class="settings-section-header">
-              <div class="settings-icon danger">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                  <line x1="12" y1="9" x2="12" y2="13"></line>
-                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-              </div>
-              <div>
-                <h3 class="settings-section-title">Zona Peligrosa</h3>
-                <p class="settings-section-description">Acciones irreversibles</p>
-              </div>
+        <!-- Sección de Zona Peligrosa -->
+        <div class="settings-section danger-zone">
+          <div class="settings-section-header">
+            <div class="settings-icon danger">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                </path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
             </div>
-            
-            <div class="settings-actions">
-              <button class="danger-action-button" (click)="logout()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                  <polyline points="16 17 21 12 16 7"></polyline>
-                  <line x1="21" y1="12" x2="9" y2="12"></line>
-                </svg>
-                Cerrar Sesión
-              </button>
-
-              <button class="danger-action-button delete" (click)="deleteAccount()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                  <line x1="10" y1="11" x2="10" y2="17"></line>
-                  <line x1="14" y1="11" x2="14" y2="17"></line>
-                </svg>
-                Eliminar Cuenta
-              </button>
+            <div>
+              <h3 class="settings-section-title">Zona Peligrosa</h3>
+              <p class="settings-section-description">Acciones irreversibles</p>
             </div>
           </div>
+
+          <div class="settings-actions">
+            <button class="danger-action-button" (click)="logout()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              Cerrar Sesión
+            </button>
+
+            <button class="danger-action-button delete" (click)="openDeleteAccountModal()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+              Eliminar Cuenta
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Eliminar Cuenta -->
+  <div *ngIf="showDeleteAccountModal" class="two-fa-modal">
+    <div class="modal-content delete-account-modal">
+      <div class="modal-header-danger">
+        <div class="danger-icon-large">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
+        <h3 class="modal-title danger-title">Eliminar Cuenta</h3>
+      </div>
+
+      <div class="delete-account-content">
+        <div class="warning-message critical">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <div>
+            <p style="margin: 0 0 0.5rem 0; font-weight: 600;">⚠️ ADVERTENCIA: Esta acción es IRREVERSIBLE</p>
+            <p style="margin: 0;">Al eliminar tu cuenta perderás permanentemente:</p>
+          </div>
+        </div>
+
+        <div class="data-loss-list">
+          <div class="loss-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Tu perfil y toda tu información personal</span>
+          </div>
+          <div class="loss-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+              </path>
+            </svg>
+            <span>Todos tus comentarios y reseñas ({{ totalComments }} comentarios)</span>
+          </div>
+          <div class="loss-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+              </polygon>
+            </svg>
+            <span>Tu historial de calificaciones y preferencias</span>
+          </div>
+          <div class="loss-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <span>Configuraciones de seguridad y privacidad</span>
+          </div>
+        </div>
+
+        <div class="confirmation-section">
+          <p class="confirmation-instruction">Para confirmar, escribe <strong>ELIMINAR</strong> en el campo:</p>
+          <input type="text" [(ngModel)]="deleteConfirmationText" class="input-field confirmation-input"
+            placeholder="Escribe ELIMINAR" (input)="deleteConfirmationText = deleteConfirmationText.toUpperCase()">
+
+          <div *ngIf="deleteAccountError" class="error-message">
+            {{ deleteAccountError }}
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="danger-button delete-confirm" (click)="confirmDeleteAccount()"
+            [disabled]="deleteConfirmationText !== 'ELIMINAR'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            Eliminar Cuenta Permanentemente
+          </button>
+          <button class="cancel-modal-button" (click)="closeDeleteAccountModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            Cancelar
+          </button>
+        </div>
       </div>
     </div>
   </div>

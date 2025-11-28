@@ -4,13 +4,26 @@ import { Observable } from 'rxjs';
 import { Movie } from '../models/movie.interface';
 
 export interface Reporte {
+  fecha_reporte_gen: string | number | Date;
   estado: string;
   id_reporte: number;
-  id_user: string;
+  id_user: number;
   descripcion: string;
-  id_review: string;
+  id_review: number;
   fecha_reporte: string;
+  name_movie: string;
+
+  estado_action: string;
+
+  id_user_review: number;
+   // Usuario que reportó
+  nombre_usuario_reporto: string;
+
+  // Usuario que hizo la review
+  nombre_usuario_review: string;
+  id_pelicula: number;
 }
+
 
 @Injectable({
   providedIn: 'root'

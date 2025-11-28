@@ -17,7 +17,7 @@ export class MoviesComponent implements OnInit {
   movies: Movie[] = [];
   readonly IMG_URL = 'https://image.tmdb.org/t/p/w500';
   currentPage = 1;
-  totalPages = 10; // puedes actualizarlo si tu API devuelve total de páginas
+  totalPages = 20; // puedes actualizarlo si tu API devuelve total de páginas
   searchTerm = '';
   searching = false;
   showingSearchResults = false;

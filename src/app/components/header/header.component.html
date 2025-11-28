@@ -1,20 +1,52 @@
 <header>
-		<div class="contenedor">
-            <h2 class="logotipo">PeliConnect</h2>
-            <nav>
-                <a routerLink="" routerLinkActive="activo" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
-                <a routerLink="/movies" routerLinkActive="activo">Películas</a>
-                @if (user != '') {
-                    <a routerLink="/user" routerLinkActive="activo">{{user}}</a>
-                    <a routerLink="/lista" routerLinkActive="activo">Mi lista</a>
-                    @if (admin == "1") {
-                        <a routerLink="/admin" routerLinkActive="activo">Admin</a>
-                    }
-                    <!-- <a routerLink="" (click)="logout()">Cerrar Sesion</a> -->
-                } @else {
-                    <a routerLink="/login" routerLinkActive="activo">Iniciar Sesión</a>
-                    <a routerLink="/registro" routerLinkActive="activo">Registrarse</a>
-                }
-            </nav>
-        </div>
+    <div class="contenedor">
+        <h2 class="logotipo" routerLink="" (click)="closeMenu()">PeliConnect</h2>
+
+        <!-- Botón del menú hamburguesa -->
+        <button class="menu-toggle" 
+                [class.active]="isMenuOpen" 
+                (click)="toggleMenu($event)"
+                type="button"
+                aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav [class.active]="isMenuOpen">
+            <a routerLink="" 
+               routerLinkActive="activo" 
+               [routerLinkActiveOptions]="{ exact: true }"
+               (click)="closeMenu()">Inicio</a>
+            <a routerLink="/movies" 
+               routerLinkActive="activo"
+               (click)="closeMenu()">Películas</a>
+            @if (user != '') {
+            <a routerLink="/user" 
+               routerLinkActive="activo"
+               (click)="closeMenu()">{{user}}</a>
+            <a routerLink="/lista" 
+               routerLinkActive="activo"
+               (click)="closeMenu()">Mi lista</a>
+            @if (admin == "1") {
+            <a routerLink="/admin" 
+               routerLinkActive="activo"
+               (click)="closeMenu()">Admin</a>
+            }
+            <!-- <a (click)="logout()" style="cursor: pointer;">Cerrar Sesión</a> -->
+            } @else {
+            <a routerLink="/login" 
+               routerLinkActive="activo"
+               (click)="closeMenu()">Iniciar Sesión</a>
+            <a routerLink="/registro" 
+               routerLinkActive="activo"
+               (click)="closeMenu()">Registrarse</a>
+            }
+        </nav>
+
+        <!-- Overlay para cerrar el menú -->
+        <div class="menu-overlay" 
+             [class.active]="isMenuOpen"
+             (click)="closeMenu()"></div>
+    </div>
 </header>

@@ -146,8 +146,8 @@ export class MovieInfoComponent implements OnInit {
     const reporte = {
       descripcion: this.descripcionReporte,
       id_user: localStorage.getItem('idUser'),
-      id_review: this.reviewSeleccionada.idReview,   // asegúrate que la reseña tenga un campo id
-      fecha_reporte: new Date().toISOString().split('T')[0]
+      id_review: this.reviewSeleccionada.idReview,
+      fecha_reporte: new Date().toLocaleString('sv-SE').replace('T', ' ')
     };
 
     console.log(reporte);

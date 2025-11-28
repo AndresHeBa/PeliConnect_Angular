@@ -131,9 +131,9 @@ export class RegistroComponent {
     this.isLoading = true;
 
     // Registrar usuario
-    this.authSvc.registerUser(this.user, this.pass, this.email).subscribe({
+    this.authSvc.registerUser(this.user, this.pass).subscribe({
       next: (res) => {
-        console.log('Registro exitoso', res);
+        //console.log('Registro exitoso', res);
         // Después del registro exitoso, enviar código
         this.sendVerificationCode();
       },
@@ -149,7 +149,7 @@ export class RegistroComponent {
   }
 
   sendVerificationCode() {
-    this.authSvc.sendVerificationCode(this.email).subscribe({
+    this.authSvc.sendVerificationCode(this.email, this.user).subscribe({
       next: (response) => {
         this.isLoading = false;
         this.currentStep = 2;
@@ -175,7 +175,7 @@ export class RegistroComponent {
 
     this.isLoading = true;
     
-    this.authSvc.verifyCode(this.email, this.verificationCode).subscribe({
+    this.authSvc.verifyCode(this.email, this.verificationCode, this.user).subscribe({
       next: (response) => {
         this.isLoading = false;
         
@@ -203,7 +203,7 @@ export class RegistroComponent {
     this.verificationCode = '';
     this.isLoading = true;
     
-    this.authSvc.sendVerificationCode(this.email).subscribe({
+    this.authSvc.sendVerificationCode(this.email, this.user).subscribe({
       next: (response) => {
         this.isLoading = false;
         this.showMessage('Nuevo código enviado', false);

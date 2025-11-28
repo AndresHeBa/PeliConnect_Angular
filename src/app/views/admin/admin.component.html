@@ -2,119 +2,298 @@
 
 <!-- Barra de pestañas -->
 <div class="tab-bar">
-  <button class="tab-btn" [class.active]="selectedTab === 'reports'" (click)="selectedTab = 'reports'">Reportes</button>
-  <button class="tab-btn" [class.active]="selectedTab === 'users'" (click)="selectedTab = 'users'">Usuarios</button>
+  <button class="tab-btn" [class.active]="selectedTab === 'reports'" (click)="selectedTab = 'reports'">
+    Reportes
+    <span class="badge" *ngIf="reports.length > 0">{{ reports.length }}</span>
+  </button>
+  <button class="tab-btn" [class.active]="selectedTab === 'users'" (click)="selectedTab = 'users'">
+    Usuarios
+    <span class="badge" *ngIf="users.length > 0">{{ users.length }}</span>
+  </button>
+  <button class="tab-btn" [class.active]="selectedTab === 'stats'" (click)="selectedTab = 'stats'">
+    Estadísticas
+  </button>
 </div>
-
-<!-- <div class="search-bar">
-  <input type="text" [value]="serchuser" (input)="serchuser = $event.target.value" placeholder="Buscar..." (keyup.enter)="buscar()" />
-  <button (click)="buscar()">Buscar</button>
-  <button *ngIf="serchuser" class="clear-btn" (click)="limpiarBusqueda()">✕</button>
-</div> -->
 
 <!-- =======================
      SECCIÓN DE REPORTES
 ======================= -->
 <section *ngIf="selectedTab === 'reports'">
-  <h3>Reportes</h3>
+  <div class="section-header">
+    <h3>Reportes</h3>
+    <div class="filters">
+      <select [(ngModel)]="filterReportStatus" (change)="applyReportFilters()" class="filter-select">
+        <option value="">Todos los estados</option>
+        <option value="Activo">Pendiente</option>
+        <option value="En revisión">En revisión</option>
+        <option value="Baneado">Usuario baneado</option>
+        <option value="Desestimado">Desestimado</option>
+      </select>
+      <input type="text" [(ngModel)]="searchReportText" (input)="applyReportFilters()" 
+             placeholder="Buscar en reportes..." class="search-input" />
+    </div>
+  </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Usuario</th>
-        <th>Motivo</th>
-        <th>Fecha</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let report of reports">
-        <td>{{ report.id_reporte }}</td>
-        <td>{{ report.id_user }}</td>
-        <td>{{ report.descripcion }}</td>
-        <td>{{ report.fecha_reporte | date:'short' }}</td>
-        <td>
-          <span [ngClass]="{
-            'estado-activo': report.estado === 'Activo',
-            'estado-revision': report.estado === 'En revisión',
-            'estado-baneado': report.estado === 'Baneado'
-          }">
-            {{ report.estado }}
-          </span>
-        </td>
-        <td>
-          <button class="view-btn" (click)="viewReport(report)">Ver</button>
-          <button class="delete-btn" (click)="deleteReport(report.id_reporte)">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Pelicula</th>
+          <th>Usuario</th>
+          <th>Motivo</th>
+          <th>Fecha</th>
+          <th>Usuario Reportado</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let report of filteredReports">
+          <td>{{ report.id_reporte }}</td>
+          <td>{{ report.name_movie }}</td>
+          <td>{{ report.nombre_usuario_reporto }}</td>
+          <td class="description-cell">{{ report.descripcion }}</td>
+          <td>{{ report.fecha_reporte | date:'short' }}</td>
+          <td>{{ report.nombre_usuario_review }}</td>
+          <td>
+            <span [ngClass]="getEstadoClase(report.estado)">
+              {{ getEstadoTexto(report.estado) }}
+            </span>
+          </td>
+          <td>
+            <button class="view-btn" (click)="viewReport(report)">Gestionar</button>
+            <button class="delete-btn" (click)="deleteReport(report.id_reporte)">Eliminar</button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredReports.length === 0">
+          <td colspan="8" class="no-data">No se encontraron reportes</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <!-- Modal -->
-  <div *ngIf="selectedReport" class="modal-overlay" (click)="selectedReport = undefined"></div>
-
+  <!-- Modal Reporte Mejorado -->
+  <div *ngIf="selectedReport" class="modal-overlay" (click)="closeModal()"></div>
   <div class="modal" tabindex="-1" [style.display]="selectedReport ? 'block' : 'none'">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-dark text-light">
         <div class="modal-header border-secondary">
-          <h5 class="modal-title">Detalle del Reporte</h5>
+          <h5 class="modal-title">
+            <span class="badge bg-info me-2">#{{ selectedReport?.id_reporte }}</span>
+            Gestión de Reporte
+          </h5>
           <button type="button" class="btn-close btn-close-white" (click)="closeModal()" aria-label="Close"></button>
         </div>
+        
         <div class="modal-body">
-          <div><strong>ID:</strong> {{ selectedReport?.id_reporte }}</div>
-          <div><strong>Usuario:</strong> {{ selectedReport?.id_user }}</div>
-          <div><strong>Descripción:</strong> {{ selectedReport?.descripcion }}</div>
-          <div><strong>Estado:</strong> {{ selectedReport?.estado }}</div>
-          <div><strong>Fecha:</strong> {{ selectedReport?.fecha_reporte | date:'short' }}</div>
+          <!-- Información del Reporte -->
+          <div class="report-info-card mb-4 p-3 bg-secondary rounded">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-2">
+                  <strong>Usuario Reportado:</strong>
+                  <span class="badge bg-warning text-dark ms-2">ID: {{ selectedReport?.id_user }}</span>
+                </div>
+                <div class="mb-2">
+                  <strong>Fecha:</strong> 
+                  <span class="ms-2">{{ selectedReport?.fecha_reporte | date:'medium' }}</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-2">
+                  <strong>Estado Actual:</strong>
+                  <span class="ms-2" [ngClass]="{
+                    'badge bg-success': selectedReport?.estado === 'Activo',
+                    'badge bg-primary': selectedReport?.estado === 'En revisión',
+                    'badge bg-danger': selectedReport?.estado === 'Baneado',
+                    'badge bg-secondary': selectedReport?.estado === 'Desestimado'
+                  }">
+                    {{ selectedReport?.estado }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mt-3">
+              <strong>Descripción del Reporte:</strong>
+              <div class="mt-2 p-2 bg-dark rounded">
+                <p class="mb-0">{{ selectedReport?.descripcion }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vista Normal: Botones de Acción -->
+          <div *ngIf="!reportAction" class="action-buttons">
+            <h6 class="mb-3">Acciones Disponibles:</h6>
+            <div class="d-grid gap-2">
+              <button 
+                class="btn btn-primary btn-lg" 
+                (click)="markAsReviewing()"
+                *ngIf="selectedReport?.estado !== 'En revisión'">
+                <i class="bi bi-eye"></i> Marcar como "En Revisión"
+              </button>
+              
+              <button 
+                class="btn btn-danger btn-lg" 
+                (click)="proceedToBanUser()"
+                *ngIf="selectedReport?.estado !== 'Baneado'">
+                <i class="bi bi-ban"></i> Banear Usuario Reportado
+              </button>
+              
+              <button 
+                class="btn btn-secondary btn-lg" 
+                (click)="markAsDismissed()"
+                *ngIf="selectedReport?.estado !== 'Desestimado'">
+                <i class="bi bi-x-circle"></i> Desestimar Reporte
+              </button>
+            </div>
+          </div>
+
+          <!-- Vista de Confirmación de Acción -->
+          <div *ngIf="reportAction" class="action-confirmation">
+            <div class="alert alert-warning">
+              <h6 class="alert-heading">
+                <span *ngIf="reportAction === 'revision'">⚠️ Marcar como En Revisión</span>
+                <span *ngIf="reportAction === 'ban'">🚫 Confirmar Baneo de Usuario</span>
+                <span *ngIf="reportAction === 'dismiss'">✓ Desestimar Reporte</span>
+              </h6>
+              <hr>
+              <p class="mb-0" *ngIf="reportAction === 'revision'">
+                Este reporte quedará marcado como "En Revisión" para que otros administradores sepan que está siendo atendido.
+              </p>
+              <p class="mb-0" *ngIf="reportAction === 'ban'">
+                El usuario <strong>con nombre: {{ selectedReport?.nombre_usuario_review }}</strong> será <strong>baneado permanentemente</strong>. Esta acción puede ser revertida desde la sección de Usuarios.
+              </p>
+              <p class="mb-0" *ngIf="reportAction === 'dismiss'">
+                Este reporte será marcado como "Desestimado". El usuario NO será baneado y el reporte quedará archivado.
+              </p>
+            </div>
+
+            <!-- Notas del administrador -->
+            <div class="form-group mt-3" *ngIf="reportAction === 'ban' || reportAction === 'dismiss'">
+              <label for="adminNotes" class="form-label">
+                <strong>{{ reportAction === 'ban' ? 'Motivo del baneo' : 'Notas administrativas' }}:</strong>
+                <span class="text-danger" *ngIf="reportAction === 'ban'">*</span>
+              </label>
+              <textarea 
+                id="adminNotes" 
+                [(ngModel)]="adminNotes" 
+                class="form-control bg-dark text-light border-secondary" 
+                rows="4" 
+                [placeholder]="reportAction === 'ban' ? 'Explica por qué se banea al usuario...' : 'Razón por la que se desestima (opcional)...'"
+                maxlength="500"></textarea>
+              <small class="text-muted">{{ adminNotes.length }}/500 caracteres</small>
+            </div>
+
+            <!-- Razones rápidas para baneo -->
+            <div class="quick-reasons mt-3" *ngIf="reportAction === 'ban'">
+              <label class="form-label"><strong>Razones comunes:</strong></label>
+              <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-sm btn-outline-light" (click)="adminNotes = 'Contenido ofensivo confirmado'">
+                  Contenido ofensivo
+                </button>
+                <button class="btn btn-sm btn-outline-light" (click)="adminNotes = 'Spam repetido'">
+                  Spam
+                </button>
+                <button class="btn btn-sm btn-outline-light" (click)="adminNotes = 'Acoso a otros usuarios'">
+                  Acoso
+                </button>
+                <button class="btn btn-sm btn-outline-light" (click)="adminNotes = 'Violación de términos de servicio'">
+                  Violación de términos
+                </button>
+                <button class="btn btn-sm btn-outline-light" (click)="adminNotes = 'Comportamiento inapropiado'">
+                  Comportamiento inapropiado
+                </button>
+              </div>
+            </div>
+
+            <!-- Botones de confirmación -->
+            <div class="d-flex gap-2 mt-4">
+              <button 
+                type="button" 
+                class="btn btn-secondary flex-fill" 
+                (click)="cancelReportAction()">
+                <i class="bi bi-arrow-left"></i> Cancelar
+              </button>
+              <button 
+                type="button" 
+                [class]="reportAction === 'ban' ? 'btn btn-danger flex-fill' : 'btn btn-success flex-fill'"
+                (click)="confirmReportAction()"
+                [disabled]="reportAction === 'ban' && !adminNotes.trim()">
+                <i [class]="reportAction === 'ban' ? 'bi bi-ban' : 'bi bi-check-circle'"></i>
+                {{ reportAction === 'ban' ? 'Confirmar Baneo' : 'Confirmar' }}
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="modal-footer border-secondary justify-content-center">
-          <button type="button" class="btn btn-warning w-100" (click)="closeModal()">Cerrar</button>
+
+        <div class="modal-footer border-secondary" *ngIf="!reportAction">
+          <button type="button" class="btn btn-outline-danger" (click)="deleteReport(selectedReport!.id_reporte)">
+            <i class="bi bi-trash"></i> Eliminar Reporte
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">
+            Cerrar
+          </button>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="modal-backdrop fade show" *ngIf="selectedReport" (click)="closeModal()"></div>
 </section>
 
 <!-- =======================
      SECCIÓN DE USUARIOS
 ======================= -->
 <section class="usuarios" *ngIf="selectedTab === 'users'">
-  <h3>Usuarios</h3>
+  <div class="section-header">
+    <h3>Usuarios</h3>
+    <div class="filters">
+      <select [(ngModel)]="filterUserStatus" (change)="applyUserFilters()" class="filter-select">
+        <option value="">Todos los estados</option>
+        <option value='1'>Activos</option>
+        <option value='0'>Baneados</option>
+      </select>
+      <input type="text" [(ngModel)]="searchUserText" (input)="applyUserFilters()" 
+             placeholder="Buscar usuario..." class="search-input" />
+    </div>
+  </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{ user.id }}</td>
-        <td>{{ user.nombre }}</td>
-        <td>{{ user.Correo }}</td>
-        <td>
-          <span *ngIf="user.activo == '1' ">Activo</span>
-          <span *ngIf="user.activo == '0' ">Baneado</span>
-        </td>
-        <td>
-          <button class="view-btn" (click)="viewUser(user)">Ver</button>
-          <button *ngIf="user.activo == '1'" class="delete-btn" (click)="banUser(user.id)">Banear</button>
-          <button *ngIf="user.activo == '0'" class="view-btn" (click)="activateUser(user.id)">Activar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{ user.id }}</td>
+          <td>{{ user.nombre }}</td>
+          <td>{{ user.Correo }}</td>
+          <td>
+            <span [ngClass]="{'estado-activo': user.activo == '1', 'estado-baneado': user.activo == '0'}">
+              {{ user.activo == '1' ? 'Activo' : 'Baneado' }}
+            </span>
+          </td>
+          <td>
+            <button class="view-btn" (click)="viewUser(user)">Ver</button>
+            <button *ngIf="user.activo == '1'" class="delete-btn" (click)="openBanModal(user)">Banear</button>
+            <button *ngIf="user.activo == '0'" class="activate-btn" (click)="activateUser(user.id)">Activar</button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredUsers.length === 0">
+          <td colspan="5" class="no-data">No se encontraron usuarios</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <!-- Modal Usuario -->
-  <div *ngIf="selectedUser" class="modal-overlay" (click)="selectedUser = undefined"></div>
+  <div *ngIf="selectedUser" class="modal-overlay" (click)="closeUserModal()"></div>
   <div class="modal" tabindex="-1" [style.display]="selectedUser ? 'block' : 'none'">
     <div class="modal-dialog modal-dialog-centered modal-sm">
       <div class="modal-content bg-dark text-light">
@@ -127,8 +306,11 @@
           <div><strong>ID: </strong> {{ selectedUser?.id }}</div>
           <div><strong>Nombre: </strong> {{ selectedUser?.nombre }}</div>
           <div><strong>Email: </strong> {{ selectedUser?.Correo }}</div>
-          <div><strong>Estado: </strong> <span *ngIf="selectedUser?.activo == '1' ">Activo</span>
-          <span *ngIf="selectedUser?.activo == '0' ">Baneado</span></div>
+          <div><strong>Estado: </strong> 
+            <span [ngClass]="{'estado-activo': selectedUser?.activo == '1', 'estado-baneado': selectedUser?.activo == '0'}">
+              {{ selectedUser?.activo == '1' ? 'Activo' : 'Baneado' }}
+            </span>
+          </div>
         </div>
         <div class="modal-footer border-secondary justify-content-center">
           <button type="button" class="btn btn-warning w-100" (click)="closeUserModal()">Cerrar</button>
@@ -136,5 +318,120 @@
       </div>
     </div>
   </div>
-  <div class="modal-backdrop fade show" *ngIf="selectedUser" (click)="closeUserModal()"></div>
+
+  <!-- Modal Baneo -->
+  <div *ngIf="userToBan" class="modal-overlay" (click)="closeBanModal()"></div>
+  <div class="modal" tabindex="-1" [style.display]="userToBan ? 'block' : 'none'">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Banear Usuario</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="closeBanModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Usuario:</strong> {{ userToBan?.nombre }} ({{ userToBan?.Correo }})</p>
+          <div class="form-group">
+            <label for="banReason"><strong>Motivo del baneo:</strong></label>
+            <textarea 
+              id="banReason" 
+              [(ngModel)]="banReason" 
+              class="form-control ban-textarea" 
+              rows="4" 
+              placeholder="Describe el motivo del baneo..."
+              maxlength="500"></textarea>
+            <small class="char-counter">{{ banReason.length }}/500 caracteres</small>
+          </div>
+          <div class="form-group">
+            <label><strong>Razones comunes:</strong></label>
+            <div class="quick-reasons">
+              <button class="reason-chip" (click)="banReason = 'Comportamiento inapropiado'">Comportamiento inapropiado</button>
+              <button class="reason-chip" (click)="banReason = 'Spam o contenido no deseado'">Spam</button>
+              <button class="reason-chip" (click)="banReason = 'Violación de términos de servicio'">Violación de términos</button>
+              <button class="reason-chip" (click)="banReason = 'Acoso a otros usuarios'">Acoso</button>
+              <button class="reason-chip" (click)="banReason = 'Contenido ofensivo'">Contenido ofensivo</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button type="button" class="btn btn-secondary" (click)="closeBanModal()">Cancelar</button>
+          <button type="button" class="btn btn-danger" (click)="confirmBanUser()" [disabled]="!banReason.trim()">
+            Banear Usuario
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =======================
+     SECCIÓN DE ESTADÍSTICAS
+======================= -->
+<section *ngIf="selectedTab === 'stats'">
+  <h3>Estadísticas del Sistema</h3>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon users-icon">👥</div>
+      <div class="stat-content">
+        <h4>Total de Usuarios</h4>
+        <p class="stat-number">{{ users.length }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon active-icon">✓</div>
+      <div class="stat-content">
+        <h4>Usuarios Activos</h4>
+        <p class="stat-number">{{ getActiveUsersCount() }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon banned-icon">🚫</div>
+      <div class="stat-content">
+        <h4>Usuarios Baneados</h4>
+        <p class="stat-number">{{ getBannedUsersCount() }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon reports-icon">📋</div>
+      <div class="stat-content">
+        <h4>Total de Reportes</h4>
+        <p class="stat-number">{{ reports.length }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon pending-icon">⏳</div>
+      <div class="stat-content">
+        <h4>Reportes Pendientes</h4>
+        <p class="stat-number">{{ getPendingReportsCount() }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon percentage-icon">📊</div>
+      <div class="stat-content">
+        <h4>Tasa de Baneo</h4>
+        <p class="stat-number">{{ getBanPercentage() }}%</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-activity">
+    <h4>Actividad Reciente</h4>
+    <div class="activity-list">
+      <div class="activity-item" *ngFor="let report of reports.slice(0, 5)">
+        <div class="activity-icon">🔔</div>
+        <div class="activity-content">
+          <p><strong>Nuevo reporte</strong> de usuario {{ report.id_user }}</p>
+          <small>{{ report.fecha_reporte_gen | date:'medium' }}</small>
+        </div>
+      </div>
+      <div class="activity-item" *ngIf="reports.length === 0">
+        <p class="no-data">No hay actividad reciente</p>
+      </div>
+    </div>
+  </div>
 </section>

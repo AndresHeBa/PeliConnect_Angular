@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   styleUrl: './user.component.css'
 })
 export class UserComponent {
+  readonly IMG_URL = 'https://image.tmdb.org/t/p/w500';
   userData?: usuarioinf;
   user = localStorage.getItem('idUser') || '';
   activeTab = 'profile';
@@ -47,6 +48,13 @@ export class UserComponent {
   filteredComments: any[] = [];
   paginatedComments: any[] = [];
   loadingComments: boolean = false;
+  loading: boolean = true;
+  error: string | null = null;
+  movie: any = {};
+
+  // ================ DELETE ================
+
+
 
   // Filtros
   searchTerm: string = '';
@@ -54,9 +62,13 @@ export class UserComponent {
   scoreFilters = [
     { label: 'Todos', value: 'all' },
     { label: '5 ⭐', value: '5' },
+    { label: '4.5 ⭐', value: '4.5' },
     { label: '4 ⭐', value: '4' },
+    { label: '3.5 ⭐', value: '3.5' },
     { label: '3 ⭐', value: '3' },
+    { label: '2.5 ⭐', value: '2.5' },
     { label: '2 ⭐', value: '2' },
+    { label: '1.5 ⭐', value: '1.5' },
     { label: '1 ⭐', value: '1' }
   ];
 
@@ -84,10 +96,8 @@ export class UserComponent {
 
   ngOnInit() {
     if (!localStorage.getItem('user')) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/login']);
     }
-    console.log(this.user);
-    console.log(this.charname);
     this.charn = this.charname.charAt(0).toUpperCase();
 
     this.getinfo();
@@ -96,9 +106,9 @@ export class UserComponent {
   getinfo() {
     this.authSvc.readuserid(this.user).subscribe({
       next: (data) => {
-        console.log('usuario recibido:', data);
+        //console.log('usuario recibido:', data);
         this.userData = Array.isArray(data) ? data[0] : (data as any).user;
-        console.log(this.userData);
+        //console.log(this.userData);
         this.twoFaEnabled = this.userData?.two_fa || false;
       },
       error: (err) => console.error('Error al cargar usuario', err)
@@ -137,7 +147,7 @@ export class UserComponent {
 
     this.authSvc.updateUser(this.user, this.editableUserData).subscribe({
       next: (response) => {
-        console.log('Perfil actualizado:', response);
+        //console.log('Perfil actualizado:', response);
         this.userData = { ...this.editableUserData };
         this.charn = this.userData.nombre?.charAt(0).toUpperCase() || 'U';
         localStorage.setItem('user', this.userData.nombre || '');
@@ -173,7 +183,7 @@ export class UserComponent {
 
     this.authSvc.generate2FA(this.user).subscribe({
       next: (response: any) => {
-        console.log('2FA generado:', response);
+        //console.log('2FA generado:', response);
         this.twoFaSecret = response.secret;
         this.qrCodeUrl = response.qrCode;
       },
@@ -193,7 +203,7 @@ export class UserComponent {
 
     this.authSvc.verify2FAs(this.user, this.verificationCode).subscribe({
       next: (response: any) => {
-        console.log('2FA verificado:', response);
+        //console.log('2FA verificado:', response);
 
         if (response.success) {
           this.twoFaEnabled = true;
@@ -223,7 +233,7 @@ export class UserComponent {
 
     this.authSvc.disable2FA(this.user, this.verificationCode).subscribe({
       next: (response: any) => {
-        console.log('2FA desactivado:', response);
+        //console.log('2FA desactivado:', response);
         if (response.success) {
           this.twoFaEnabled = false;
           if (this.userData) {
@@ -295,7 +305,7 @@ export class UserComponent {
 
     this.authSvc.changePassword(this.user, this.currentPassword, this.newPassword).subscribe({
       next: (response) => {
-        console.log('Contraseña cambiada:', response);
+        //console.log('Contraseña cambiada:', response);
         alert('Contraseña cambiada exitosamente');
         this.currentPassword = '';
         this.newPassword = '';
@@ -315,7 +325,6 @@ export class UserComponent {
 
     this.authSvc.getUserReviews(this.user).subscribe({
       next: (comments) => {
-        console.log('Comentarios recibidos:', comments);
         this.userComments = comments.map(c => ({
           ...c,
           expanded: false,
@@ -323,6 +332,7 @@ export class UserComponent {
           moviePoster: ''
         }));
         this.filteredComments = [...this.userComments];
+        console.log(this.userComments)
         this.calculateStats();
         this.updatePagination();
         this.loadingComments = false;
@@ -342,28 +352,21 @@ export class UserComponent {
 
     movieIds.forEach(id => {
       if (!this.moviesCache.has(id)) {
-        // Aquí debes usar tu servicio de películas
-        // Por ejemplo: this.movieSvc.getMovieById(id).subscribe(...)
-        // Por ahora, usamos datos simulados
-        this.movies.getMovieInfo(id).subscribe({
-          next: (movie) => {
-            this.moviesCache.set(id, movie);
-            // Actualizar los comentarios con la info de la película
+        this.movies.getMovieDetails(id).subscribe({
+          next: (data) => {
+            this.moviesCache = data;
             this.userComments.forEach(comment => {
               if (comment.ID_pelicula === id) {
-                comment.movieTitle = movie.titulo || movie.Titulo || 'Película';
-                comment.moviePoster = movie.poster || movie.Poster || '';
+                comment.movieTitle = data.title || 'Película';
+                comment.fecha = data.release_date || ' ';
+                comment.poster = data.poster_path;
               }
             });
+            this.loading = false;
           },
-          error: (err) => {
-            console.error(`Error al cargar película ${id}:`, err);
-            // Fallback
-            this.userComments.forEach(comment => {
-              if (comment.ID_pelicula === id) {
-                comment.movieTitle = `Película #${id}`;
-              }
-            });
+          error: () => {
+            this.error = 'No se pudieron cargar los detalles de la película.';
+            this.loading = false;
           }
         });
       }
@@ -375,16 +378,32 @@ export class UserComponent {
     return comment?.movieTitle || 'Cargando...';
   }
 
-  getMoviePoster(movieId: string): string {
-    const comment = this.userComments.find(c => c.ID_pelicula === movieId);
-    return comment?.moviePoster || '';
+  getMoviePoster(path: string): string {
+    return path ? `https://image.tmdb.org/t/p/w500${path}` : 'assets/img/no-image.jpg';
+  }
+
+  getMovieDetails(id: string): void {
+    this.loading = true;
+    this.error = null;
+
+    this.movies.getMovieDetails(id).subscribe({
+      next: (data) => {
+        this.movie = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error al obtener detalles:', err);
+        this.error = 'No se pudieron cargar los detalles de la película.';
+        this.loading = false;
+      }
+    });
   }
 
   calculateStats() {
     this.totalComments = this.userComments.length;
     if (this.totalComments > 0) {
       const sum = this.userComments.reduce((acc, c) => acc + Number(c.score), 0);
-      this.averageScore = sum / this.totalComments;
+      this.averageScore = (sum / 2) / this.totalComments;
     } else {
       this.averageScore = 0;
     }
@@ -403,10 +422,24 @@ export class UserComponent {
       });
     }
 
-    // Filtrar por score
+    // Filtrar por score (soporta escalas 0-5 y 0-10 y decimales como 4.5)
     if (this.currentScoreFilter !== 'all') {
-      const score = parseInt(this.currentScoreFilter);
-      filtered = filtered.filter(c => Number(c.score) === score);
+      const selectedScore = parseFloat(this.currentScoreFilter);
+
+      filtered = filtered.filter(c => {
+        let commentScore = Number(c.score);
+
+        if (isNaN(commentScore)) return false;
+
+        // Si el score viene en escala 0-10 (ej. 9 o 8.5), convertir a 0-5
+        if (commentScore > 5) {
+          commentScore = commentScore / 2;
+        }
+
+        // Comparación con tolerancia para cubrir valores decimales (4.5)
+        const tolerance = 0.25; // puedes ajustar si deseas mayor/menor tolerancia
+        return Math.abs(commentScore - selectedScore) <= tolerance;
+      });
     }
 
     this.filteredComments = filtered;
@@ -425,7 +458,7 @@ export class UserComponent {
 
     const startIndex = (this.currentPage - 1) * this.commentsPerPage;
     const endIndex = startIndex + this.commentsPerPage;
-    this.paginatedComments = this.filteredComments.slice(startIndex, endIndex);
+    this.paginatedComments = this.filteredComments.slice(startIndex, endIndex);    
   }
 
   previousPage() {
@@ -485,15 +518,12 @@ export class UserComponent {
     this.router.navigate(['/pelicula', comment.ID_pelicula]);
   }
 
-  deleteComment(comment: any) {
+  deleteComment(id: any) {
     if (confirm('¿Estás seguro de que deseas eliminar este comentario?')) {
-      this.authSvc.deleteReview(comment.ID || comment.id).subscribe({
+      console.log(id)
+      this.authSvc.deleteReview(id).subscribe({
         next: () => {
-          this.userComments = this.userComments.filter(c =>
-            (c.ID || c.id) !== (comment.ID || comment.id)
-          );
-          this.filterComments();
-          this.calculateStats();
+          window.location.reload()
           alert('Comentario eliminado exitosamente');
         },
         error: (err) => {
@@ -520,26 +550,53 @@ export class UserComponent {
     if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
       localStorage.removeItem('user');
       localStorage.removeItem('iduser')
-      this.router.navigate(['/login']);
+      window.location.reload()
     }
   }
 
+  // Propiedades para el modal de eliminar cuenta
+  showDeleteAccountModal: boolean = false;
+  deleteConfirmationText: string = '';
+  deleteAccountError: string = '';
+
+  // Método para abrir el modal
+  openDeleteAccountModal() {
+    this.showDeleteAccountModal = true;
+    this.deleteConfirmationText = '';
+    this.deleteAccountError = '';
+  }
+
+  // Método para cerrar el modal
+  closeDeleteAccountModal() {
+    this.showDeleteAccountModal = false;
+    this.deleteConfirmationText = '';
+    this.deleteAccountError = '';
+  }
+
+  // Método para confirmar y eliminar la cuenta
+  confirmDeleteAccount() {
+    if (this.deleteConfirmationText !== 'ELIMINAR') {
+      this.deleteAccountError = 'Debes escribir "ELIMINAR" exactamente para confirmar';
+      return;
+    }
+
+    // Aquí va tu lógica de eliminación
+    this.authSvc.deleteAccount(this.user).subscribe({
+      next: () => {
+        alert('Tu cuenta ha sido eliminada');
+        localStorage.clear();
+        window.location.reload()
+        this.router.navigate(['/']);
+      },
+      error: (error: any) => {
+        console.error('Error al eliminar cuenta:', error);
+        this.deleteAccountError = 'Error al eliminar la cuenta. Por favor intenta de nuevo.';
+      }
+    });
+  }
+
+  // Actualiza tu método deleteAccount() existente
   deleteAccount() {
-    // if (confirm('⚠️ ADVERTENCIA: Esta acción es irreversible. ¿Estás COMPLETAMENTE seguro de que deseas eliminar tu cuenta?')) {
-    //   const confirmText = prompt('Escribe "ELIMINAR" para confirmar:');
-    //   if (confirmText === 'ELIMINAR') {
-    //     this.authSvc.deleteAccount(this.user).subscribe({
-    //       next: () => {
-    //         alert('Tu cuenta ha sido eliminada');
-    //         localStorage.clear();
-    //         this.router.navigate(['/']);
-    //       },
-    //       error: (err) => {
-    //         console.error('Error al eliminar cuenta:', err);
-    //         alert('Error al eliminar la cuenta');
-    //       }
-    //     });
-    //   }
-    // }
+    this.openDeleteAccountModal();
   }
 }

@@ -13,7 +13,6 @@ const httpOptions = {
   body: {}
 };
 
-
 export interface usuario {
   id: string;
   nombre: string;
@@ -32,22 +31,42 @@ export interface usuarioinf {
   providedIn: 'root'
 })
 export class AuthService {
+  deleteAccount(user: string): Observable<any> {
+    const options = {
+      body: {
+        id: user
+      }
+    };
+
+    return this.http.delete(`${_URL_SERVICES}delete_user`, options);
+  }
+
+
+
+  updateReportStatus(reportId: number, newStatus: string): Observable<any> {
+    const body = {
+      id: reportId,
+      estado: newStatus
+    };
+
+    return this.http.put(`${_URL_SERVICES}report_admin`, body);
+  }
+
 
   constructor(private http: HttpClient) { }
 
-  sendVerificationCode(email: string): Observable<any> {
-    return this.http.post(`${_URL_SERVICES}send-verification`, { email });
-  }
+  sendVerificationCode(email: string, username: string): Observable<any> {
+    return this.http.post(`${_URL_SERVICES}send-verification`, { email, username });
+  };
 
-  verifyCode(email: string, code: string): Observable<any> {
-    return this.http.post(`${_URL_SERVICES}verify-code`, { email, code });
-  }
+  verifyCode(email: string, code: string, username: string): Observable<any> {
+    return this.http.post(`${_URL_SERVICES}verify-code`, { email, code, username });
+  };
 
-  registerUser(username: string, password: string, email: string) {
+  registerUser(username: string, password: string) {
     const body = {
       user: username,
       pass: password,
-      email: email
     }
     return this.http.post<any>(`${_URL_SERVICES}registrarUsuario`, body, httpOptions);
   }
@@ -68,11 +87,15 @@ export class AuthService {
     return this.http.post<any>(`${_URL_SERVICES}login`, body, httpOptions);
   }
 
-  verify2FA(user: string, pass: string, token2fa: string) {
+  verify2FA(user: string, pass: string, token2fa: string, loginDate: string, loginTime: string, deviceInfo: string, location: any) {
     const body = {
       user: user,
       pass: pass,
-      token2fa: token2fa
+      token2fa: token2fa,
+      loginDate: loginDate,
+      loginTime: loginTime,
+      deviceInfo: deviceInfo,
+      location: location
     };
 
     return this.http.post<any>(`${_URL_SERVICES}verify-2fa`, body, httpOptions);
@@ -86,7 +109,7 @@ export class AuthService {
   }
 
   deleteReview(reviewId: string): Observable<any> {
-    return this.http.delete(`${_URL_SERVICES}review/${reviewId}`);
+    return this.http.delete(`${_URL_SERVICES}review_d/${reviewId}`);
   }
 
   readuser() {
@@ -98,9 +121,11 @@ export class AuthService {
     return this.http.post<{ user: usuarioinf }>(`${_URL_SERVICES}get_user`, body, httpOptions);
   }
 
-  banuser(id: string) {
+  banuser(id: string, bandate: String, banReason: string) {
     const body = {
-      id: id
+      id: id,
+      bandate: bandate,
+      banReason: banReason
     }
     return this.http.post<any>(`${_URL_SERVICES}ban_user`, body, httpOptions);
   }
@@ -149,5 +174,8 @@ export class AuthService {
       newPassword
     });
   }
+
+
+
 
 }

@@ -1,11 +1,77 @@
+<!-- Hero Section -->
 <div class="pelicula-principal">
     <div class="contenedor">
-        <h3 class="titulo">Interestellar</h3>
+        <h1 class="titulo">Peliconnect</h1>
         <p class="descripcion">
-            Narra las aventuras de un grupo de exploradores que hacen uso de un agujero de gusano recientemente descubierto para superar las limitaciones de los viajes espaciales tripulados y vencer las inmensas distancias que tiene un viaje interestelar.
+            Descubre, califica y comparte reseñas de películas con una comunidad apasionada por el cine.
         </p>
-        <button role="button" class="boton"><i class="fas fa-play"></i> Reproducir</button>
-        <button role="button" class="boton"><i class="fas fa-info-circle"></i> Más información</button>
+        <div class="hero-botones">
+            <button class="boton" (click)="loadpeliculas()" >Explorar Peliculas</button>
+            <button class="boton boton-secundario" (click)="loadregistro()">Crear cuenta</button>
+        </div>
     </div>
 </div>
-<app-movie-carousel></app-movie-carousel>
+
+<!-- Carousel -->
+<div class="carousel-container">
+    <div class="carousel" id="carousel">
+        <div class="carousel-slide"
+            style="background-image: url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')">
+            <div class="carousel-text">Explora miles de reseñas de películas</div>
+        </div>
+
+        <div class="carousel-slide"
+            style="">
+            <div class="carousel-text">Califica tus películas favoritas</div>
+        </div>
+
+        <div class="carousel-slide"
+            style="background-image: url('https://images.unsplash.com/photo-1595769816263-9b910be24d5f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')">
+            <div class="carousel-text">Conecta con otros cinéfilos</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Sección de información -->
+<section class="info-section">
+    <h2>¿Qué es Peliconnect?</h2>
+    <p>
+        Peliconnect es una plataforma donde los amantes del cine pueden compartir opiniones,
+        descubrir nuevas películas y crear su propia colección de reseñas. Conecta con una
+        comunidad global de cinéfilos y descubre contenido que de otra forma podrías pasar por alto.
+    </p>
+</section>
+
+<!-- Sección de características -->
+<section class="features-section">
+    <h2>¿Qué hacemos?</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <h3>🎬 Reseñas reales</h3>
+            <p>Mostramos opiniones auténticas de usuarios reales, sin filtros ni algoritmos que distorsionen la
+                experiencia.</p>
+        </div>
+        <div class="feature-card">
+            <h3>⭐ Sistema de puntuación</h3>
+            <p>Califica películas con estrellas y comparte tus críticas detalladas con la comunidad.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🔥 Comunidad activa</h3>
+            <p>Conecta con más cinéfilos como tú, sigue a tus críticos favoritos y descubre nuevas perspectivas.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de acciones -->
+<section class="actions-section">
+    <h2>¿Qué puedes hacer aquí?</h2>
+    <ul>
+        <li>Crear reseñas de tus películas favoritas</li>
+        <li>Leer opiniones de otros usuarios</li>
+        <li>Guardar películas en tu lista personal</li>
+        <li>Calificar películas con nuestro sistema de estrellas</li>
+        <li>Seguir a otros críticos y cinéfilos</li>
+        <li>Descubrir recomendaciones personalizadas</li>
+    </ul>
+</section>
